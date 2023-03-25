@@ -1,0 +1,36 @@
+User-agent: Googlebot
+Disallow: 
+
+User-agent: Bingbot
+Disallow: 
+Crawl-delay: 15
+
+User-agent: DuckDuckBot
+Disallow: 
+Crawl-delay: 16
+
+User-agent: Slurp Bot
+Disallow: 
+Crawl-delay: 17
+
+User-agent: Baiduspider
+Disallow: 
+Crawl-delay: 18
+
+User-agent: YandexBot
+Disallow: 
+Crawl-delay: 19
+
+User-agent: Sogou Spider
+Disallow: 
+Crawl-delay: 20
+
+User-agent: Exabot
+Disallow: 
+Crawl-delay: 21
+
+
+
+
+
+
