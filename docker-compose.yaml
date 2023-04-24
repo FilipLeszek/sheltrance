@@ -1,10 +1,40 @@
 version: '3.8'
+
 services:
   app:
-    image: sheltrance
+    image: sheltmate
     build:
-      context: .
-      dockerfile: Dockerfile
       target: runner
+      dockerfile: Dockerfile
+      context: ./app
     ports:
       - "3000:3000"
+    networks:
+      - database
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: postgres:12-alpine
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=shelter
+      - POSTGRES_DB=shelter
+    expose:
+      - "5432"
+    networks:
+      - database
+    volumes:
+      - "db-data:/var/lib/postgresql/data"
+    healthcheck:
+      test: [ "CMD-SHELL", "sh -c 'pg_isready -U postgres -d shelter'" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  db-data:
+    driver: local
+
+networks:
+  database:
