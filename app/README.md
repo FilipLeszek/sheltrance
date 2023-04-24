@@ -5,7 +5,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ### Instrukcja uruchomienia
 Aplikacja jest skonteneryzowana <br>
-wystraczy wykonać docker compose up w folderze sheltrance <br>
+wystraczy wykonać polecenie: docker compose up w folderze sheltrance <br>
 Docker compose up spowoduje zbudowanie aplikacji next.js i <br>
 wykona niezbędne polcenia do poprawnej pracy ORM. <br>
 Następnie poczeka aż baza danych będzie gotowa i wykona migrację schematu danych.
@@ -13,6 +13,10 @@ Następnie poczeka aż baza danych będzie gotowa i wykona migrację schematu da
 Zostanie stworzony testowy użytkownik o danych: <br>
 login: user
 hasło: test
+
+### Przebudowanie obrazu
+Jeśli chcemy wymusić przebudowanie obrazów można to zrobić za pomocą: >br>
+docker compose up --build
 
 ## Getting Started
 
