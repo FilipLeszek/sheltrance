@@ -1,6 +1,18 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ### Cel projektu
+Stworzenie aplikacji CRM dla schronisk. <br>
+Podstawową funkcjonalnością aplikacji ma być obsługa nowych zgłoszen/wiadomość od osób zainteresowanych adopcją. <br>
+System ma również wspierać tworzenie spraw adopcyjnych jak i zarządzanie sprawami istniejącymi. <br>
+
+### Skład zespołu
+* Zuzanna Filipkowska 
+* Mariusz Paluch
+* Filip Leszek
+* Michał Kowalczyk
+
+Mentor zespołu: mgr inż. Klara Borowa <br>
+
 
 
 ### Instrukcja uruchomienia
@@ -18,7 +30,7 @@ hasło: test
 Jeśli chcemy wymusić przebudowanie obrazów można to zrobić za pomocą: >br>
 docker compose up --build
 
-## Getting Started
+## Dla developerów
 
 First, run the development server:
 
