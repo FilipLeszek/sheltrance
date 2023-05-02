@@ -1,173 +1,43 @@
+import Link from "next/link";
+import {useRouter} from "next/router";
+
 type Props = {
 };
 
 export const SideMenu: React.FC<Props> = ({ }) => {
+  const router = useRouter();
+
   return <>
     <div className="flex h-screen flex-col justify-between border-e bg-white">
       <div className="px-4 py-6">
     <span
         className="grid h-10 w-32 place-content-center rounded-lg bg-gray-100 text-xs text-gray-600"
     >
-      Logo
+      SheltMate
     </span>
 
         <nav aria-label="Main Nav" className="mt-6 flex flex-col space-y-1">
-          <a
-              href="#"
-              className="flex items-center gap-2 rounded-lg bg-gray-100 px-4 py-2 text-gray-700"
-          >
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 opacity-75"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="2"
-            >
-              <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-              />
-              <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-              />
+          <Link href="/messages"
+                className={`flex items-center gap-2 rounded-lg px-4 py-2 text-gray-700
+                    ${router.pathname == "/messages" ? "bg-gray-100" : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"}` }>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+          </svg>
+            <span className="text-sm font-medium"> Zgłoszenia </span>
+          </Link>
+
+
+          <Link href="/cases"
+
+            className={`flex items-center gap-2 rounded-lg px-4 py-2 text-gray-700 
+            ${router.pathname == "/cases" ? "bg-gray-100" : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"}
+           ` }>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"
+                 className="w-6 h-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
             </svg>
-
-            <span className="text-sm font-medium"> General </span>
-          </a>
-
-          <details className="group [&_summary::-webkit-details-marker]:hidden">
-            <summary
-                className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-            >
-              <div className="flex items-center gap-2">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 opacity-75"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                >
-                  <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                  />
-                </svg>
-
-                <span className="text-sm font-medium"> Teams </span>
-              </div>
-
-              <span className="shrink-0 transition duration-300 group-open:-rotate-180">
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-            >
-              <path
-                  fillRule="evenodd"
-                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                  clipRule="evenodd"
-              />
-            </svg>
-          </span>
-            </summary>
-
-            <nav aria-label="Teams Nav" className="mt-2 flex flex-col px-4">
-              <a
-                  href="#"
-                  className="flex items-center gap-2 rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-              >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 opacity-75"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                >
-                  <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"
-                  />
-                </svg>
-
-                <span className="text-sm font-medium"> Banned Users </span>
-              </a>
-
-              <a
-                  href="#"
-                  className="flex items-center gap-2 rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-              >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 opacity-75"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                >
-                  <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                  />
-                </svg>
-
-                <span className="text-sm font-medium"> Calendar </span>
-              </a>
-            </nav>
-          </details>
-
-          <a
-              href="#"
-              className="flex items-center gap-2 rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-          >
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 opacity-75"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="2"
-            >
-              <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-              />
-            </svg>
-
-            <span className="text-sm font-medium"> Billing </span>
-          </a>
-
-          <a
-              href="#"
-              className="flex items-center gap-2 rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-          >
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 opacity-75"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="2"
-            >
-              <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
-              />
-            </svg>
-
-            <span className="text-sm font-medium"> Invoices </span>
-          </a>
+            <span className="text-sm font-medium"> Sprawy adopcyjne </span>
+          </Link>
 
           <details className="group [&_summary::-webkit-details-marker]:hidden">
             <summary
@@ -189,7 +59,7 @@ export const SideMenu: React.FC<Props> = ({ }) => {
                   />
                 </svg>
 
-                <span className="text-sm font-medium"> Account </span>
+                <span className="text-sm font-medium"> Twoje konto </span>
               </div>
 
               <span className="shrink-0 transition duration-300 group-open:-rotate-180">
@@ -209,10 +79,10 @@ export const SideMenu: React.FC<Props> = ({ }) => {
             </summary>
 
             <nav aria-label="Account Nav" className="mt-2 flex flex-col px-4">
-              <a
-                  href="#"
-                  className="flex items-center gap-2 rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-              >
+              <Link href="/settings"
+
+                className={`flex items-center gap-2 rounded-lg px-4 py-2 text-gray-700
+                ${router.pathname == "/settings" ? "bg-gray-100" : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"}` }>
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-5 w-5 opacity-75"
@@ -227,31 +97,8 @@ export const SideMenu: React.FC<Props> = ({ }) => {
                       d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"
                   />
                 </svg>
-
-                <span className="text-sm font-medium"> Details </span>
-              </a>
-
-              <a
-                  href="#"
-                  className="flex items-center gap-2 rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-              >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 opacity-75"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                >
-                  <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                  />
-                </svg>
-
-                <span className="text-sm font-medium"> Security </span>
-              </a>
+                <span className="text-sm font-medium"> Ustawienia</span>
+              </Link>
 
               <form action="/logout">
                 <button
