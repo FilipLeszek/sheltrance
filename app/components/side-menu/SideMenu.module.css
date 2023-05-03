@@ -1,0 +1,21 @@
+
+.menu {
+  background-color: var(--off-white);
+}
+
+.menuElement {
+  background-color: var(--primary-blue);
+  height: 45px;
+  color: black;
+}
+
+.menuElement:hover {
+  background-color: var(--highlight-blue--light);
+}
+
+.menuElementActive {
+  background-color: var(--highlight-blue);
+  height: 45px;
+  color: black;
+
+}
