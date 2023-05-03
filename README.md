@@ -2,8 +2,21 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ### Cel projektu
 Stworzenie aplikacji CRM dla schronisk. <br>
-Podstawową funkcjonalnością aplikacji ma być obsługa nowych zgłoszen/wiadomość od osób zainteresowanych adopcją. <br>
-System ma również wspierać tworzenie spraw adopcyjnych jak i zarządzanie sprawami istniejącymi. <br>
+Ma na celu ułatwić codziennie funkcjonowanie schroniska poprzez dostarczenie rozwiązania do <br>
+monitorowania zgłoszeń od osób zainteresowanymi adopcją oraz prowadzenie spraw adopcyjnych.<br>
+Nasze rozwiązanie kierowane jest szczególnie do małych schronisk często prowadzonych przez kilka <br>
+osób, które do tego celu używają rozwiązań analogowych czy np. portali społecznościowych.<br>
+Chcemy, aby rejestracja schroniska była możliwie prosta i intuicyjna – manager będzie musiał podać <br>
+tylko podstawowe dane z możliwością uzupełnienia reszty później.<br>
+Manager będzie mógł następnie utworzyć konta pracowników.<br>
+Podstawową funkcjonalnością aplikacji ma być obsługa nowych zgłoszeń/wiadomość od osób zainteresowanych adopcją.<br>
+System ma również wspierać tworzenie spraw adopcyjnych jak i zarządzanie sprawami istniejącymi.<br>
+Użytkownicy będą mieli możliwość przeglądania listy zgłoszeń oraz spraw z możliwością filtrowania widoków. <br>
+Będzie również możliwość obejrzenia i modyfikowania szczegółów spraw oraz zgłoszeń.<br>
+Aby, ułatwić zarządzanie zgłoszeniami i sprawami będzie możliwość przypisania spraw oraz zgłoszeń do konkretnych<br> pracowników.
+
+
+
 
 ### Skład zespołu
 * Zuzanna Filipkowska 
