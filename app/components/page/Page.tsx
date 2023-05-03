@@ -1,4 +1,4 @@
-import {SideMenu} from "@/components/SideMenu";
+import {SideMenu} from "@/components/side-menu/SideMenu";
 import styles from './Page.module.css';
 import Button from "@/components/Button";
 import {signOut} from "next-auth/react";
