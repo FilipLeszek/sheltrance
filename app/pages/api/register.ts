@@ -18,16 +18,18 @@ export default async function handler(
     return res.status(405).json({ error: "Bad method." });
   }
 
-  const { email, password, name } = await parseDataFromReq(req);
+  const { email, password, login, name, address } = await parseDataFromReq(req);
 
   const prisma = new PrismaClient();
 
   try {
     const user = await prisma.user.create({
       data: {
-        name: name,
+        login: login,
         email: email,
         password: password,
+        name: name,
+        address: address,
       },
     });
   } catch (error: any) {
@@ -35,5 +37,5 @@ export default async function handler(
   } finally {
     await prisma.$disconnect();
   }
-  return res.status(200).json({data: "User has been added."});
+  return res.status(200).json({ data: "User has been added." });
 }

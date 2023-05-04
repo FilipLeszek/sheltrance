@@ -4,6 +4,8 @@ import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useRef } from "react";
+import LoginStructure from "@/components/login/LoginStructure";
+import Input from "@/components/login/Input";
 
 type Props = {
   // Add custom props here
@@ -32,33 +34,23 @@ const Login: NextPage<Props> = (props) => {
   };
 
   return (
-    <div className="h-[60vh] flex flex-col items-center justify-center">
-      <form
-        onSubmit={loginHandler}
-        className="flex flex-col w-[20vw] h-[15vw] justify-around text-center"
-      >
-        <div className="text-4xl">Login</div>
-        <input
-          ref={emailRef}
-          type="text"
-          placeholder="Email"
-          className="border-2 shadow-md"
-        />
-        <input
-          ref={passwordRef}
-          type="password"
-          placeholder="Password"
-          className="border-2 shadow-md"
-        />
-        <Button type="submit">Login</Button>
-      </form>
-      <div className="mt-[5vw] w-[15vw] text-center flex flex-col justify-around h-[8vw]">
-        <div>Not having an account?</div>
-        <Button>
-          <Link href={"/register"}>Register</Link>
-        </Button>
+    <LoginStructure>
+      <div className="h-full w-[70%] flex flex-col justify-center items-center">
+        <form
+          onSubmit={loginHandler}
+          className="flex flex-col w-full h-[25%] justify-around text-center"
+        >
+          <div className="text-4xl">Zaloguj się</div>
+          <Input ref={emailRef} type="text" placeholder="Login" />
+          <Input ref={passwordRef} type="password" placeholder="Hasło" />
+          <Button type="submit">Zaloguj się</Button>
+        </form>
+        <div className="flex flex-row w-[53%] justify-between text-gray-500">
+          <div>Nie masz konta?</div>
+          <Link href={"/register"} className="underline">Zarejestruj</Link>
+        </div>
       </div>
-    </div>
+    </LoginStructure>
   );
 };
 

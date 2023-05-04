@@ -2,12 +2,16 @@ import Button from "@/components/Button";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useRef } from "react";
-import type { User } from "@prisma/client";
+import LoginStructure from "@/components/login/LoginStructure";
+import Input from "@/components/login/Input";
+import Link from "next/link";
 
 type UserBuilder = {
   name: string;
   email: string;
   password: string;
+  login: string;
+  address: string;
 };
 
 type Props = {};
@@ -16,15 +20,19 @@ const Register: NextPage<Props> = (props) => {
   const router = useRouter();
 
   const emailRef = useRef<HTMLInputElement>(null);
-  const nameRef = useRef<HTMLInputElement>(null);
+  const loginRef = useRef<HTMLInputElement>(null);
   const passwordRef1 = useRef<HTMLInputElement>(null);
   const passwordRef2 = useRef<HTMLInputElement>(null);
+  const nameRef = useRef<HTMLInputElement>(null);
+  const addressRef = useRef<HTMLInputElement>(null);
 
   const registerHandler = async () => {
     const email = emailRef.current?.value;
     const name = nameRef.current?.value;
     const password1 = passwordRef1.current?.value;
     const password2 = passwordRef2.current?.value;
+    const login = loginRef.current?.value;
+    const address = addressRef.current?.value;
 
     if (name!.trim().length <= 4) {
       alert("Username is too short.");
@@ -39,42 +47,42 @@ const Register: NextPage<Props> = (props) => {
       return;
     }
 
-    await addUser({ email: email!, password: password1!, name: name!.trim() });
+    await addUser({
+      email: email!,
+      password: password1!,
+      name: name!.trim(),
+      login: login!.trim(),
+      address: address!,
+    });
 
     router.push("/login");
   };
 
   return (
-    <div className="h-[60vh] flex flex-col items-center justify-center">
-      <div className="flex flex-col w-[20vw] h-[20vw] justify-around text-center">
-        <div className="text-4xl">Register</div>
-        <input
-          ref={nameRef}
-          type="text"
-          placeholder="Username"
-          className="border-2 shadow-md"
-        />
-        <input
-          ref={emailRef}
-          type="text"
-          placeholder="Email"
-          className="border-2 shadow-md"
-        />
-        <input
-          ref={passwordRef1}
-          type="password"
-          placeholder="Password"
-          className="border-2 shadow-md"
-        />
-        <input
-          ref={passwordRef2}
-          type="password"
-          placeholder="Repeat password"
-          className="border-2 shadow-md"
-        />
-        <Button onClick={registerHandler}>Register</Button>
+    <LoginStructure>
+      <div className="flex flex-col w-[70%] h-[60%] justify-between">
+        <div className="text-4xl">Zarejestruj schronisko</div>
+        <div className="my-5">
+          Uzupełnij podstawowe dane i załóż konto managera. W kolejnym kroku
+          możliwe będzie dodanie pracowników.
+        </div>
+        <Input ref={emailRef} type="email" placeholder="Email" />
+        <Input ref={loginRef} type="text" placeholder="Login" />
+        <Input ref={passwordRef1} type="password" placeholder="Hasło" />
+        <Input ref={passwordRef2} type="password" placeholder="Powtórz hasło" />
+        <Input ref={nameRef} type="text" placeholder="Nazwa" />
+        <Input ref={addressRef} type="text" placeholder="Adres" />
+        <Button onClick={registerHandler}>Zarejestruj</Button>
+        <div className="w-full flex justify-center">
+          <div className="flex flex-row w-[53%] justify-between text-gray-500">
+            <div>Masz już konto?</div>
+            <Link href={"/login"} className="underline">
+              Zaloguj się
+            </Link>
+          </div>
+        </div>
       </div>
-    </div>
+    </LoginStructure>
   );
 };
 
