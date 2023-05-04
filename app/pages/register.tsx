@@ -74,7 +74,7 @@ const Register: NextPage<Props> = (props) => {
         <Input ref={addressRef} type="text" placeholder="Adres" />
         <Button onClick={registerHandler}>Zarejestruj</Button>
         <div className="w-full flex justify-center">
-          <div className="flex flex-row w-[53%] justify-between text-gray-500">
+          <div className="flex flex-row w-52 justify-between text-gray-500">
             <div>Masz już konto?</div>
             <Link href={"/login"} className="underline">
               Zaloguj się

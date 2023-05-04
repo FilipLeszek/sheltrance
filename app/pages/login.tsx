@@ -45,7 +45,7 @@ const Login: NextPage<Props> = (props) => {
           <Input ref={passwordRef} type="password" placeholder="Hasło" />
           <Button type="submit">Zaloguj się</Button>
         </form>
-        <div className="flex flex-row w-[53%] justify-between text-gray-500">
+        <div className="flex flex-row w-52 justify-between text-gray-500">
           <div>Nie masz konta?</div>
           <Link href={"/register"} className="underline">Zarejestruj</Link>
         </div>
