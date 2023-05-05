@@ -1,0 +1,19 @@
+.styledTable {
+    border-collapse: collapse;
+    margin: 25px 0;
+}
+
+.styledTable thead tr {
+    text-align: left;
+}
+
+.styledTable th,
+.styledTable td {
+    padding: 12px 15px;
+}
+
+.styledTable tbody tr {
+    border-top: 1px solid #dddddd;
+    border-bottom: 1px solid #dddddd;
+}
+
