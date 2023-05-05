@@ -14,45 +14,23 @@ export default function MessagesPage() {
         <Page children={
           <div>
             <h2>Zgłoszenia</h2>
-            <div className="dropdown">
-                <button
-                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center"
-                  onClick={handleDropDown}
-                >
-                  Status
-                  <svg
-                    className="ml-2 w-4 h-4"
-                    aria-hidden="true"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M19 9l-7 7-7-7"
-                    ></path>
-                  </svg>
-                </button>
 
-                <div
-                  id="dropdown"
-                  className={`z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow ${
-                    isOpen ? "block" : "hidden"
-                  }`}
-                >
-                  <ul className=" z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow ">
-                      <li
-                      >
-                        <a href="#" className="block py-2 px-4 hover:bg-gray-100">
-                          opcja1
-                        </a>
-                      </li>
-                  </ul>
-                </div>
-              </div>
+            <div>
+            <select className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+              <option selected>Status</option>
+              <option value="1">Status 1</option>
+              <option value="2">Status 2</option>
+              <option value="3">Status 3</option>
+              <option value="4">Status 4</option>
+            </select>
+              <select className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <option selected>Osoba</option>
+                <option value="1">Osoba 1</option>
+                <option value="2">Osoba 2</option>
+                <option value="3">Osoba 3</option>
+                <option value="4">Osoba 4</option>
+              </select>
+            </div>
 
             <div className="overflow-x-auto">
                     <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
