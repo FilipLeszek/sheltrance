@@ -10,6 +10,7 @@
     "start:migrate:prod": "npx prisma migrate deploy && node server.js"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.14",
     "@next/font": "13.2.3",
     "@prisma/client": "^4.13.0",
     "@types/node": "18.14.6",

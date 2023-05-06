@@ -16,3 +16,14 @@ model User {
   name     String
   password String
 }
+
+model TempEmployee {
+  id          Int     @id @default(autoincrement())
+  firstName   String
+  lastName    String
+  phoneNumber String
+  email       String  @unique
+  password    String
+  accountType Boolean
+}
+
