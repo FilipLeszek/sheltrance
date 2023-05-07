@@ -10,7 +10,7 @@ export default function Page ({ children }) {
 
   const { data: session, status } = useSession()
   if (status === "loading") {
-    //return <p>Loading...</p>
+    return <p>Loading...</p>
   }
 
   if (status === "unauthenticated") {
@@ -25,7 +25,7 @@ export default function Page ({ children }) {
               <SideMenu ></SideMenu>
             </div>
             <main>
-              <div className="styles.content">
+              <div className={styles.content}>
                 {children}
                 <div className="w-full h-40 text-center flex flex-col justify-center items-center ">
                 </div>

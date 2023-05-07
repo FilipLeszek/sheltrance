@@ -33,14 +33,16 @@ export default function MessagesPage() {
 
   return (
       <>
+        {/*@ts-ignore*/}
         <Page children={
           <div>
             <h2>Zgłoszenia</h2>
 
-            <div>
+            <div className={styles.filters}>
+              <span className={styles.spacer}></span>
             <select className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-              <option key="1" value="1">Status 1</option>
-              <option key="2" value="2">Status 2</option>
+              <option key="1" value="1">Otwarte</option>
+              <option key="2" value="2">Zamkniete</option>
             </select>
               <select className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
               {
@@ -51,7 +53,7 @@ export default function MessagesPage() {
               </select>
             </div>
 
-            <div className="overflow-x-auto">
+            <div className={styles.table}>
                     <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
                       <thead className="ltr:text-left rtl:text-right">
                         <tr>

@@ -256,10 +256,9 @@ export default function ShelterEmployeesPage() {
     )
   }
 
-  return (
-      <>
-        <Page children={
-          <div className="ml-20 w-min">
+  // @ts-ignore
+  return (<> <Page children={
+          <div className="w-min">
             <MyDialog></MyDialog>
             <p className="text-4xl font-medium ml-4 mb-10 mt-8">Pracownicy</p>
             <div className="overflow-x-auto">
@@ -277,7 +276,7 @@ export default function ShelterEmployeesPage() {
                     <th className="px-4 py-2"></th>
                   </tr>
                 </thead>
-            
+
                 <tbody className="divide-y divide-gray-200">
                   {employeeArray && employeeArray.map((e: EmployeeInfo) =>
                       <EmployeeListItem key={e.id} employee={e} edit={(editedEmployeeID === e.id)}/>
@@ -288,16 +287,16 @@ export default function ShelterEmployeesPage() {
             <div className="flex flex-row-reverse mr-4 mt-4">
               <WorkerButton onClick={handleAdd}>
               Dodaj pracownika
-                <svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  fill="none" 
-                  viewBox="0 0 24 24" 
-                  strokeWidth={1.5} 
-                  stroke="currentColor" 
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
                   className="w-6 h-6">
-                  <path 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round" 
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     d="M12 4.5v15m7.5-7.5h-15" />
                 </svg>
               </WorkerButton>

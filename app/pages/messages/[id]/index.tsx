@@ -8,6 +8,7 @@ export default function MessagePage() {
 
   return (
       <>
+        {/*@ts-ignore*/}
         <Page children={
           <h2>Post: {id}</h2>
         }/>

@@ -6,3 +6,11 @@
 .sidebar {
   width: 300px;
 }
+
+.content {
+  width: calc(100vw - 300px);
+  max-width: calc(100vw - 300px);
+  overflow: hidden;
+  margin-left: 5rem; /* 80px */
+  box-sizing: border-box;
+}

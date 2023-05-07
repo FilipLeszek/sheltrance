@@ -17,3 +17,22 @@
     border-bottom: 1px solid #dddddd;
 }
 
+.filters {
+    display: flex;
+    align-items: flex-end;
+    justify-items: flex-end;
+    margin: 2rem 4rem;
+    gap: 1rem;
+}
+
+.filters select {
+    width: 300px;
+}
+.spacer {
+    flex: 1 1 auto;
+}
+
+.table {
+    /*width: 100%;*/
+    margin: 2rem 0;
+}

@@ -8,6 +8,7 @@ export default function AdoptionPage() {
 
   return (
       <>
+        {/*@ts-ignore*/}
         <Page children={
           <h2>Post: {id}</h2>
         }/>
