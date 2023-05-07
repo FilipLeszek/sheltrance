@@ -85,7 +85,7 @@ export default function MessagesPage() {
                                 <td className="whitespace-nowrap px-4 py-2 text-gray-700">{message.worker}</td>
                                 <td className="whitespace-nowrap px-4 py-2">
                                   <a
-                                    href="#"
+                                    href={`/messages/${message.id}`}
                                     className="inline-block rounded bg-[#F4694D] px-4 py-2 text-xs font-medium text-black hover:bg-indigo-700"
                                   >
                                     Podgląd

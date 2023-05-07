@@ -10,7 +10,7 @@ export default function MessagePage() {
       <>
         {/*@ts-ignore*/}
         <Page children={
-          <h2>Post: {id}</h2>
+          <h2>Szczegóły zgłoszenia numer: {id}</h2>
         }/>
       </>
   )

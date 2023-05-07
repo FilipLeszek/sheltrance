@@ -8,9 +8,8 @@
 }
 
 .content {
-  width: calc(100vw - 300px);
-  max-width: calc(100vw - 300px);
+  width: calc(100vw - 380px);
+  max-width: calc(100vw - 380px);
   overflow: hidden;
   margin-left: 5rem; /* 80px */
-  box-sizing: border-box;
 }

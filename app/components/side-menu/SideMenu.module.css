@@ -1,6 +1,7 @@
 
 .menu {
   background-color: var(--off-white);
+  width: 300px;
 }
 
 .menuElement {
