@@ -41,8 +41,8 @@ const Login: NextPage<Props> = (props) => {
           className="flex flex-col w-full md:h-[25%] xl:h-[35%] justify-around text-center"
         >
           <div className="text-4xl">Zaloguj się</div>
-          <Input ref={emailRef} type="text" placeholder="Login" />
-          <Input ref={passwordRef} type="password" placeholder="Hasło" />
+          <Input reference={emailRef} type="text" placeholder="Login" />
+          <Input reference={passwordRef} type="password" placeholder="Hasło" />
           <Button type="submit">Zaloguj się</Button>
         </form>
         <div className="flex flex-row w-52 justify-between text-gray-500">

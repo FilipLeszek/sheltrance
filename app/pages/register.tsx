@@ -66,12 +66,12 @@ const Register: NextPage<Props> = (props) => {
           Uzupełnij podstawowe dane i załóż konto managera. W kolejnym kroku
           możliwe będzie dodanie pracowników.
         </div>
-        <Input ref={emailRef} type="email" placeholder="Email" />
-        <Input ref={loginRef} type="text" placeholder="Login" />
-        <Input ref={passwordRef1} type="password" placeholder="Hasło" />
-        <Input ref={passwordRef2} type="password" placeholder="Powtórz hasło" />
-        <Input ref={nameRef} type="text" placeholder="Nazwa" />
-        <Input ref={addressRef} type="text" placeholder="Adres" />
+        <Input reference={emailRef} type="email" placeholder="Email" />
+        <Input reference={loginRef} type="text" placeholder="Login" />
+        <Input reference={passwordRef1} type="password" placeholder="Hasło" />
+        <Input reference={passwordRef2} type="password" placeholder="Powtórz hasło" />
+        <Input reference={nameRef} type="text" placeholder="Nazwa" />
+        <Input reference={addressRef} type="text" placeholder="Adres" />
         <Button onClick={registerHandler}>Zarejestruj</Button>
         <div className="w-full flex justify-center">
           <div className="flex flex-row w-52 justify-between text-gray-500">
