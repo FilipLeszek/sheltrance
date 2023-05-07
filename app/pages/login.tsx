@@ -29,8 +29,12 @@ const Login: NextPage<Props> = (props) => {
       password: password,
     });
 
-    if (!result?.error) router.push("/");
-    else alert(result.error);
+    if (result?.error) {
+      alert(result.error);
+    }
+    else {
+      router.push("/");
+    }
   };
 
   return (

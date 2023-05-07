@@ -1,6 +1,6 @@
 import Page from "@/components/page/Page";
 import Link from "next/link";
-import { Fragment, useRef, useState, useEffect } from 'react'
+import {Fragment, useRef, useState, useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import WorkerButton from "@/components/shelter/workers/WorkerButton";
 import DialogInput from "@/components/shelter/workers/DialogInput";
@@ -75,7 +75,7 @@ export default function ShelterEmployeesPage() {
 
   function handleDelete(employee: EmployeeInfo) {
     deleteEmployee(employee.id);
-    setEmployeeArray(employeeArray.filter(e => e.id !== employee.id))
+    setEmployeeArray(employeeArray.filter((e: EmployeeInfo) => e.id !== employee.id))
   }
 
   function MyDialog(){
@@ -126,7 +126,7 @@ export default function ShelterEmployeesPage() {
                     <DialogInput type="tel" name="Nr telefonu" ref={phoneNumberRef}></DialogInput>
                   </div>
                   <div>
-                    <DialogInput type="password" name="Hasło" ref={passwordRef}></DialogInput>
+                    <DialogInput type={'password'} name={"Hasło"} ref={passwordRef}/>
                   </div>
                   <div className="px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                     <WorkerButton onClick={handleNewEmployee}>
@@ -279,8 +279,8 @@ export default function ShelterEmployeesPage() {
                 </thead>
             
                 <tbody className="divide-y divide-gray-200">
-                  {employeeArray && employeeArray.map((e) => 
-                      <EmployeeListItem employee={e} edit={(editedEmployeeID === e.id)}/>
+                  {employeeArray && employeeArray.map((e: EmployeeInfo) =>
+                      <EmployeeListItem key={e.id} employee={e} edit={(editedEmployeeID === e.id)}/>
                   )}
                 </tbody>
               </table>

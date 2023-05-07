@@ -1,1 +1,1 @@
-INSERT INTO "User" VALUES (DEFAULT, 'user@test.pl', 'user', 'test');
+INSERT INTO "User" VALUES (DEFAULT, 'user@test.pl', 'user', 'test', 'Schronisko 1', 'Warszawa ul. Grzybowska 2');

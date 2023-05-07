@@ -1,10 +1,14 @@
 import Link from "next/link";
 import {useRouter} from "next/router";
-import {useSession} from "next-auth/react";
+import {signOut, useSession} from "next-auth/react";
 import styles from './SideMenu.module.css';
 
 
 type Props = {
+};
+
+const logoutHandler = () => {
+  signOut();
 };
 
 export const SideMenu: React.FC<Props> = ({ }) => {
@@ -167,9 +171,9 @@ export const SideMenu: React.FC<Props> = ({ }) => {
                 <span className="text-sm font-medium"> Ustawienia</span>
               </Link>
 
-              <form action="/logout">
+              <div>
                 <button
-                    type="submit"
+                    onClick={logoutHandler}
                     className={`flex w-full items-center gap-2 rounded-lg px-4 py-2 ${styles.menuElement}`}
                 >
                   <svg
@@ -187,9 +191,9 @@ export const SideMenu: React.FC<Props> = ({ }) => {
                     />
                   </svg>
 
-                  <span className="text-sm font-medium"> Logout </span>
+                  <span className="text-sm font-medium"> Wyloguj </span>
                 </button>
-              </form>
+              </div>
             </nav>
           </details>
         </nav>

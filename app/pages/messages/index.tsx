@@ -39,13 +39,13 @@ export default function MessagesPage() {
 
             <div>
             <select className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-              <option value="1">Status 1</option>
-              <option value="2">Status 2</option>
+              <option key="1" value="1">Status 1</option>
+              <option key="2" value="2">Status 2</option>
             </select>
               <select className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
               {
                 messages.map(message => 
-                  <option value={message.id}>{message.candidate}</option>
+                  <option key={message.id} value={message.id}>{message.candidate}</option>
                 )
               }
               </select>
@@ -74,7 +74,7 @@ export default function MessagesPage() {
                       <tbody className="divide-y divide-gray-200">
                         {
                           messages.map(message =>
-                            <tr>
+                            <tr key={message.id}>
                               <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                                   #{message.id}
                                 </td>
