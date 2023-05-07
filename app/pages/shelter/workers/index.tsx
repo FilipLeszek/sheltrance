@@ -1,7 +1,10 @@
 import Page from "@/components/page/Page";
 import Link from "next/link";
-import { Fragment, useRef, useState } from 'react'
+import { Fragment, useRef, useState, useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
+import WorkerButton from "@/components/shelter/workers/WorkerButton";
+import DialogInput from "@/components/shelter/workers/DialogInput";
+
 
 type EmployeeInfo = {
   id: number;
@@ -11,19 +14,39 @@ type EmployeeInfo = {
   phoneNumber: string;
 };
 
-let initialEmployees = [
-  {id: 1, firstName: "Jan", lastName: 'Janowski', email: 'jan@gmail.com', phoneNumber: '123 123 123'},
-  {id: 2, firstName: "Michał", lastName: 'Michałowski', email: 'michal@gmail.com', phoneNumber: '123 123 123'},
-  {id: 3, firstName: "Anna", lastName: 'Annowska', email: 'anna@gmail.com', phoneNumber: '123 123 123'},
-];
+type EmployeeBuilder = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  password: string;
+};
 
 export default function ShelterEmployeesPage() {
-
-  const [employeeArray, setEmployeeArray] = useState(initialEmployees);
+  
+  const [employeeArray, setEmployeeArray] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editedEmployeeID, setEditedEmployeeID] = useState(0);
 
-  const cancelButtonRef = useRef(null)
+  const firstNameRef = useRef<HTMLInputElement>(null);
+  const lastNameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const phoneNumberRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    async function getData() {
+      const response = await fetch("/api/employees", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        }
+      })
+      let data = await response.json();
+      setEmployeeArray(data.data)
+    }
+    getData()
+  }, [])
   
   function handleReset(id: number) {
     setEditedEmployeeID(id)
@@ -34,14 +57,31 @@ export default function ShelterEmployeesPage() {
     setDialogOpen(true)
   }
 
+  const handleNewEmployee = async () => {
+    const firstName = firstNameRef.current?.value;
+    const lastName = lastNameRef.current?.value;
+    const email = emailRef.current?.value;
+    const phoneNumber = phoneNumberRef.current?.value;
+    const password = passwordRef.current?.value;
+
+    await addNewEmployee({
+      firstName: firstName!,
+      lastName: lastName!,
+      email: email!,
+      phoneNumber: phoneNumber!,
+      password: password!,
+    });
+  }
+
   function handleDelete(employee: EmployeeInfo) {
-    setEmployeeArray(employeeArray.filter(e=> e.id !== employee.id))
+    deleteEmployee(employee.id);
+    setEmployeeArray(employeeArray.filter(e => e.id !== employee.id))
   }
 
   function MyDialog(){
     return (
       <Transition.Root show={dialogOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={setDialogOpen}>
+        <Dialog as="div" className="relative z-10" onClose={setDialogOpen}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -73,30 +113,24 @@ export default function ShelterEmployeesPage() {
                   <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
                   Dodaj nowego użytkownika
                   </Dialog.Title>
-
-
-                   <div>
-
-                  <label
-                    htmlFor="UserEmail"
-                    className="block overflow-hidden rounded-md border border-gray-200 px-3 py-2 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
-                  >
-                    <span className="text-xs font-medium text-gray-700"> Email </span>
-
-                    <input
-                      type="email"
-                      id="UserEmail"
-                      className="mt-1 w-full border-none p-0 focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
-                    />
-                  </label>
+                  <div>
+                    <DialogInput type="text" name="Imię" ref={firstNameRef}></DialogInput>
                   </div>
-                  <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                    <button
-                      className="inline-flex items-center gap-2 bg-[#F4694D] rounded px-8 py-3 text-base font-medium text-black transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-[#F4694D]"
-                      onClick={() => setDialogOpen(false)}
-                    >
+                  <div>
+                    <DialogInput type="text" name="Nazwisko" ref={lastNameRef}></DialogInput>
+                  </div>
+                  <div>
+                    <DialogInput type="email" name="Email" ref={emailRef}></DialogInput>
+                  </div>
+                  <div>
+                    <DialogInput type="tel" name="Nr telefonu" ref={phoneNumberRef}></DialogInput>
+                  </div>
+                  <div>
+                    <DialogInput type="password" name="Hasło" ref={passwordRef}></DialogInput>
+                  </div>
+                  <div className="px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                    <WorkerButton onClick={handleNewEmployee}>
                       Dodaj
-
                       <svg 
                         xmlns="http://www.w3.org/2000/svg" 
                         fill="none" 
@@ -109,14 +143,14 @@ export default function ShelterEmployeesPage() {
                           strokeLinejoin="round" 
                           d="M12 4.5v15m7.5-7.5h-15" />
                       </svg>
-                    </button>
-                    <button
-                      className="inline-flex mr-40 items-center gap-2 bg-gray-200 rounded px-8 py-3 text-base font-medium text-black transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-gray-200"
+                    </WorkerButton>
+                    <WorkerButton
+                      color="bg-gray-200"
+                      mr="mr-40"
                       onClick={() => setDialogOpen(false)}
-                      ref={cancelButtonRef}
                     >
                       Anuluj
-                    </button>
+                    </WorkerButton>
                   </div>
                   </form>
                 </Dialog.Panel>
@@ -202,13 +236,13 @@ export default function ShelterEmployeesPage() {
                   xmlns="http://www.w3.org/2000/svg" 
                   fill="none" 
                   viewBox="0 0 24 24" 
-                  stroke-width="1.5" 
+                  strokeWidth="1.5" 
                   stroke="#F4694D" 
                   className="w-6 h-6">
 
                   <path 
-                    stroke-linecap="round" 
-                    stroke-linejoin="round" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
                     d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
                 </svg>
 
@@ -222,68 +256,78 @@ export default function ShelterEmployeesPage() {
     )
   }
 
-
   return (
       <>
         <Page children={
-          
-          <div className="ml-20">
+          <div className="ml-20 w-min">
             <MyDialog></MyDialog>
             <p className="text-4xl font-medium ml-4 mb-10 mt-8">Pracownicy</p>
             <div className="overflow-x-auto">
-            <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
-              <thead className="ltr:text-left rtl:text-right">
-                <tr>
-                  <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                  </th>
-                  <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                    Imię
-                  </th>
-                  <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                    Nazwisko
-                  </th>
-                  <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                    Email
-                  </th>
-                  <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                    Numer telefonu
-                  </th>
-                  <th className="px-4 py-2"></th>
-                </tr>
-              </thead>
-          
-              <tbody className="divide-y divide-gray-200">
-                {employeeArray.map((e) => 
-                    <EmployeeListItem employee={e} edit={(editedEmployeeID === e.id)}/>
-                 )}
-              </tbody>
-            </table>
-
-
-          </div>
-          <div className="flex flex-row-reverse mr-4 mt-4">
-            <button
-              className="inline-flex me-96 items-center gap-2 bg-[#F4694D] rounded px-8 py-3 text-base font-medium text-black transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-[#F4694D]"
-              onClick={handleAdd}
-            >
+              <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
+                <thead className="ltr:text-left rtl:text-right">
+                  <tr>
+                    {["", "Imię", "Nazwisko", "Email", "Numer telefonu"].map((h) => {
+                      return(
+                        <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                          {h}
+                        </th>
+                      )
+                    }
+                    )}
+                    <th className="px-4 py-2"></th>
+                  </tr>
+                </thead>
+            
+                <tbody className="divide-y divide-gray-200">
+                  {employeeArray && employeeArray.map((e) => 
+                      <EmployeeListItem employee={e} edit={(editedEmployeeID === e.id)}/>
+                  )}
+                </tbody>
+              </table>
+            </div>
+            <div className="flex flex-row-reverse mr-4 mt-4">
+              <WorkerButton onClick={handleAdd}>
               Dodaj pracownika
-
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                fill="none" 
-                viewBox="0 0 24 24" 
-                strokeWidth={1.5} 
-                stroke="currentColor" 
-                className="w-6 h-6">
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  d="M12 4.5v15m7.5-7.5h-15" />
-              </svg>
-            </button>
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  strokeWidth={1.5} 
+                  stroke="currentColor" 
+                  className="w-6 h-6">
+                  <path 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+              </WorkerButton>
+            </div>
           </div>
-        </div>
         }/>
       </>
   )
+}
+
+async function addNewEmployee(employeeInfo: EmployeeBuilder) {
+  const response = await fetch("/api/createEmployee", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(employeeInfo),
+  });
+
+  if (!response.ok) alert(await response.text());
+}
+
+async function deleteEmployee(id: number) {
+  const response = await fetch("/api/deleteEmployee", {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({id: id}),
+  });
+
+  if (!response.ok) alert(await response.text());
 }
