@@ -7,7 +7,6 @@ const Button: React.FC<{
   onClick?: ([]: number[]) => void;
   args?: any[];
 }> = (props) => {
-  const colorClass = props.color ? props.color : "bg-blue-500";
 
   const clickHandler = () => {
     if (props.onClick) {
@@ -19,7 +18,9 @@ const Button: React.FC<{
     <button
       type={props.type}
       onClick={clickHandler}
-      className={`p-[0.5vw] px-[0.8vw] min-w-[3vw] rounded-md text-white hover:scale-105 transition ${colorClass} `}
+      className={
+        `inline-block rounded border border-[#FA5E47] bg-[#FA5E47] px-12 py-3 text-sm font-medium text-black hover:bg-transparent hover:text-[#FA5E47] focus:outline-none focus:ring active:text-[#FA5E47]`
+      }
     >
       {props.children}
     </button>
