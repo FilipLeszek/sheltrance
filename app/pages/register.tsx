@@ -60,7 +60,7 @@ const Register: NextPage<Props> = (props) => {
 
   return (
     <LoginStructure>
-      <div className="flex flex-col w-[70%] h-[60%] justify-between">
+      <div className="flex flex-col w-[70%] h-[80%] justify-between">
         <div className="text-4xl">Zarejestruj schronisko</div>
         <div className="my-5">
           Uzupełnij podstawowe dane i załóż konto managera. W kolejnym kroku

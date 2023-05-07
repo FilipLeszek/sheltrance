@@ -38,7 +38,7 @@ const Login: NextPage<Props> = (props) => {
       <div className="h-full w-[70%] flex flex-col justify-center items-center">
         <form
           onSubmit={loginHandler}
-          className="flex flex-col w-full h-[25%] justify-around text-center"
+          className="flex flex-col w-full md:h-[25%] xl:h-[35%] justify-around text-center"
         >
           <div className="text-4xl">Zaloguj się</div>
           <Input ref={emailRef} type="text" placeholder="Login" />
