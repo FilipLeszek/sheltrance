@@ -25,15 +25,16 @@ const Login: NextPage<Props> = (props) => {
 
     const result = await signIn("credentials", {
       redirect: false,
-      emil: username,
+      email: username,
       password: password,
     });
 
-    if (result?.error) {
-      alert(result.error);
+    if (result?.ok) {
+      router.push("/");
+      console.log(result)
     }
     else {
-      router.push("/");
+      alert(result?.error);
     }
   };
 

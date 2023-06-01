@@ -23,7 +23,7 @@ export default async function handler(
   const prisma = new PrismaClient();
 
   try {
-    const user = await prisma.tempEmployee.delete({
+    const user = await prisma.appUser.delete({
       where: {
         id: id
       }

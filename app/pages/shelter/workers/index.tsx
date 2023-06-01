@@ -4,7 +4,7 @@ import {Fragment, useRef, useState, useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import WorkerButton from "@/components/shelter/workers/WorkerButton";
 import DialogInput from "@/components/shelter/workers/DialogInput";
-
+import {NextPage} from "next";
 
 type EmployeeInfo = {
   id: number;
@@ -20,10 +20,13 @@ type EmployeeBuilder = {
   email: string;
   phoneNumber: string;
   password: string;
+  shelterId: number;
 };
 
-export default function ShelterEmployeesPage() {
-  
+type Props = {};
+
+const ShelterEmployeesPage:  NextPage<Props> = (props) => {
+
   const [employeeArray, setEmployeeArray] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editedEmployeeID, setEditedEmployeeID] = useState(0);
@@ -69,7 +72,7 @@ export default function ShelterEmployeesPage() {
       lastName: lastName!,
       email: email!,
       phoneNumber: phoneNumber!,
-      password: password!,
+      password: password!
     });
   }
 
@@ -307,7 +310,7 @@ export default function ShelterEmployeesPage() {
   )
 }
 
-async function addNewEmployee(employeeInfo: EmployeeBuilder) {
+async function addNewEmployee(employeeInfo: { firstName: string; lastName: string; password: string; phoneNumber: string; email: string }) {
   const response = await fetch("/api/createEmployee", {
     method: "POST",
     headers: {
@@ -330,3 +333,5 @@ async function deleteEmployee(id: number) {
 
   if (!response.ok) alert(await response.text());
 }
+
+export default ShelterEmployeesPage;

@@ -18,18 +18,26 @@ export default async function handler(
     return res.status(405).json({ error: "Bad method." });
   }
 
-  const { email, password, login, name, address } = await parseDataFromReq(req);
+  const { email, password, name, address, firstName, lastName, phoneNumber  } = await parseDataFromReq(req);
 
   const prisma = new PrismaClient();
 
   try {
-    const user = await prisma.user.create({
+    const shelter = await prisma.shelter.create({
       data: {
-        login: login,
+        address: address,
+        name: name,
+      }
+    })
+    const user = await prisma.appUser.create({
+      data: {
         email: email,
         password: password,
-        name: name,
-        address: address,
+        firstName: firstName,
+        lastName: lastName,
+        phoneNumber: phoneNumber,
+        role: "manager",
+        shelterId: shelter.id
       },
     });
   } catch (error: any) {

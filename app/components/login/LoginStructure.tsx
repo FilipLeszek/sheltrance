@@ -8,7 +8,7 @@ const LoginStructure: React.FC<{
     <div className="h-screen grid grid-cols-[1.5fr_1fr] grid-rows-1">
       <div className="h-full bg-loginBg flex flex-col pt-[15vh] px-[8vw] font-inter">
         <div className="flex flex-row w-[26rem] justify-between text-left">
-          <div className="lg:text-7xl">SheltMate</div>
+          <div className="lg:text-7xl">Shelterance</div>
           <div className="relative w-20 h-20">
             <Image
               src={"/paw.png"}

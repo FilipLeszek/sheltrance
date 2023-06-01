@@ -1,5 +1,7 @@
-import { PrismaClient, TempEmployee } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
+import {getServerSession} from "next-auth";
+import {authOptions} from "@/pages/api/auth/[...nextauth]";
 
 type EmployeeInfo = {
   id: number;
@@ -24,11 +26,16 @@ export default async function handler(
   if (req.method !== "GET") {
     return res.status(405).json({ error: "Bad method." });
   }
+  const session = await getServerSession(req, res, authOptions)
 
   const prisma = new PrismaClient();
 
   try {
-    const employees = await prisma.tempEmployee.findMany({
+
+    const employees = await prisma.appUser.findMany({
+      where: {
+        shelterId: session?.user?.shelterId
+      },
       select: {
         id: true,
         firstName: true,
