@@ -11,21 +11,46 @@ datasource db {
 }
 
 model AppUser {
-  id       Int    @id @default(autoincrement())
-  email    String @unique
-  password String
+  id          Int        @id @default(autoincrement())
+  email       String     @unique
+  password    String
   firstName   String
   lastName    String
   phoneNumber String
-  role String
-  shelter Shelter  @relation(fields: [shelterId], references: [id])
-  shelterId Int
+  role        String
+  shelter     Shelter    @relation(fields: [shelterId], references: [id])
+  shelterId   Int
+  adoptions   Adoption[]
 }
 
 model Shelter {
-    id          Int     @id @default(autoincrement())
-    name     String
-    address  String
-    workers AppUser[]
+  id        Int        @id @default(autoincrement())
+  name      String
+  address   String
+  workers   AppUser[]
+  adoptions Adoption[]
 }
 
+model Adoption {
+  id             Int             @id @default(autoincrement())
+  animalId       Int
+  animalName     String
+  clientName     String
+  stages         AdoptionStage[]
+  assignedWorker AppUser?        @relation(fields: [userId], references: [id])
+  userId         Int
+  isFinished     Boolean         @default(false)
+  shelter        Shelter?        @relation(fields: [shelterId], references: [id])
+  shelterId      Int?
+   createdAt  DateTime   @default(now())
+}
+
+model AdoptionStage {
+  id           Int      @id @default(autoincrement())
+  description  String
+  name         String
+  dateFinished String
+  isFinished   Boolean  @default(false)
+  adoption     Adoption @relation(fields: [adoptionId], references: [id])
+  adoptionId   Int
+}
