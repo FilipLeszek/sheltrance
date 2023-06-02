@@ -31,7 +31,6 @@ const Login: NextPage<Props> = (props) => {
 
     if (result?.ok) {
       router.push("/");
-      console.log(result)
     }
     else {
       alert(result?.error);

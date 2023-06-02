@@ -4,8 +4,6 @@ import {getServerSession} from "next-auth";
 import {authOptions} from "@/pages/api/auth/[...nextauth]";
 import {CaseInfo} from "@/pages/cases";
 
-
-
 type ResponseData = {
   data?: CaseInfo[];
   error?: string;
