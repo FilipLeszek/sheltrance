@@ -41,3 +41,14 @@ next-env.d.ts
 
 /app/node_modules/
 /app/.next/
+/app/coverage/lcov-report/base.css
+/app/coverage/lcov-report/block-navigation.js
+/app/coverage/clover.xml
+/app/coverage/coverage-final.json
+/app/coverage/lcov-report/favicon.png
+/app/coverage/lcov-report/index.html
+/app/coverage/lcov.info
+/app/coverage/lcov-report/prettify.css
+/app/coverage/lcov-report/prettify.js
+/app/coverage/lcov-report/sort-arrow-sprite.png
+/app/coverage/lcov-report/sorter.js
