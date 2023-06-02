@@ -10,8 +10,10 @@ type UserBuilder = {
   name: string;
   email: string;
   password: string;
-  login: string;
   address: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
 };
 
 type Props = {};
@@ -20,7 +22,10 @@ const Register: NextPage<Props> = (props) => {
   const router = useRouter();
 
   const emailRef = useRef<HTMLInputElement>(null);
-  const loginRef = useRef<HTMLInputElement>(null);
+  const firstNameRef = useRef<HTMLInputElement>(null);
+  const lastNameRef = useRef<HTMLInputElement>(null);
+  const phoneRef = useRef<HTMLInputElement>(null);
+
   const passwordRef1 = useRef<HTMLInputElement>(null);
   const passwordRef2 = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
@@ -31,7 +36,9 @@ const Register: NextPage<Props> = (props) => {
     const name = nameRef.current?.value;
     const password1 = passwordRef1.current?.value;
     const password2 = passwordRef2.current?.value;
-    const login = loginRef.current?.value;
+    const firstName = firstNameRef.current?.value;
+    const lastName = lastNameRef.current?.value;
+    const phone = phoneRef.current?.value;
     const address = addressRef.current?.value;
 
     if (name!.trim().length <= 4) {
@@ -51,8 +58,10 @@ const Register: NextPage<Props> = (props) => {
       email: email!,
       password: password1!,
       name: name!.trim(),
-      login: login!.trim(),
       address: address!,
+      firstName: firstName!,
+      lastName: lastName!,
+      phoneNumber: phone!,
     });
 
     router.push("/login");
@@ -67,7 +76,9 @@ const Register: NextPage<Props> = (props) => {
           możliwe będzie dodanie pracowników.
         </div>
         <Input reference={emailRef} type="email" placeholder="Email" />
-        <Input reference={loginRef} type="text" placeholder="Login" />
+        <Input reference={firstNameRef} type="text" placeholder="Imię" />
+        <Input reference={lastNameRef} type="text" placeholder="Nazwisko" />
+        <Input reference={phoneRef} type="text" placeholder="Numer telefonu" />
         <Input reference={passwordRef1} type="password" placeholder="Hasło" />
         <Input reference={passwordRef2} type="password" placeholder="Powtórz hasło" />
         <Input reference={nameRef} type="text" placeholder="Nazwa" />

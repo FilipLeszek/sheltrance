@@ -1,6 +1,8 @@
 import { parseDataFromReq } from "@/lib/api-utils";
 import { PrismaClient } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
+import {getServerSession} from "next-auth";
+import {authOptions} from "@/pages/api/auth/[...nextauth]";
 
 type ResponseData = {
   data?: string;
@@ -19,20 +21,24 @@ export default async function handler(
   }
 
   const {firstName, lastName,  email, phoneNumber, password } = await parseDataFromReq(req);
+  const session = await getServerSession(req, res, authOptions)
+
 
   const prisma = new PrismaClient();
 
-  try {
-    const user = await prisma.tempEmployee.create({
+  try {if (session?.user?.shelterId){
+    const user = await prisma.appUser.create({
       data: {
         firstName: firstName,
         lastName: lastName,
         email: email,
         phoneNumber: phoneNumber,
         password: password,
-        accountType: false,
+        role: "user",
+        shelterId: session?.user?.shelterId,
       },
     });
+  }
   } catch (error: any) {
     return res.status(400).json({ error: error.message });
   } finally {
