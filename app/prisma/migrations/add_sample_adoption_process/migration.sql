@@ -11,3 +11,7 @@ INSERT INTO "Adoption" VALUES (1003, 1, 'animalName1', 'clientName1', 1001, TRUE
 INSERT INTO "Adoption" VALUES (1004, 2, 'animalName2', 'clientName2', 1002, TRUE, 1000);
 INSERT INTO "Adoption" VALUES (1005, 3, 'animalName3', 'clientName3', 1003, TRUE, 1000);
 INSERT INTO "Adoption" VALUES (1006, 3, 'animalName3', 'clientName3', 1004, TRUE, 1000);
+
+INSERT INTO "Message" VALUES (DEFAULT, DEFAULT, 1, 'zwierzątko', 'Imie', 'Nazwisko','test@gmail.com', 1000, 'message');
+INSERT INTO "Message" VALUES (DEFAULT, DEFAULT, 1, 'zwierzątko', 'Imie', 'Nazwisko','test@gmail.com', 1000, 'message');
+INSERT INTO "Message" VALUES (DEFAULT, DEFAULT, 1, 'zwierzątko', 'Imie', 'Nazwisko','test123@gmail.com', 1001, 'message');
