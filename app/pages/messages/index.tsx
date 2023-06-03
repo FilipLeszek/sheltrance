@@ -18,6 +18,9 @@ export default function MessagesPage() {
   const [isOpen, setOpen] = useState(false);
   const [messages, setMessages] = useState<Messages[]>([]);
 
+  const [messageType, setMessageType] = useState("all");
+  const [currentContact, setCurrentContact] = useState<string>("all");
+
   useEffect(() => {
     fetch("/api/messages", {
       method: "GET",
@@ -37,6 +40,13 @@ export default function MessagesPage() {
     setOpen(!isOpen);
   };
 
+  const handleMessageTypeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    console.log(e.target.value)
+  }
+
+  const handleCurrentUserSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    console.log(e.target.value)
+  }
   return (
       <>
         {/*@ts-ignore*/}
@@ -46,17 +56,19 @@ export default function MessagesPage() {
 
             <div className={styles.filters}>
               <span className={styles.spacer}></span>
-            <select className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-              <option key="1" value="1">Otwarte</option>
-              <option key="2" value="2">Zamkniete</option>
+            <select onChange={handleMessageTypeSelect} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+              <option key="all"    value="all">Wszystkie</option>
+              <option key="open"   value="open">Otwarte</option>
+              <option key="closed" value="closed">Zamkniete</option>
             </select>
-              <select className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            <select onChange={handleCurrentUserSelect} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+              <option key="all" value="all">Wszyscy</option>
               {
                 messages.map(message => 
                   <option key={message.id} value={message.id}>{message.candidateContactInfo}</option>
                 )
               }
-              </select>
+            </select>
             </div>
 
             <div className={styles.table}>
