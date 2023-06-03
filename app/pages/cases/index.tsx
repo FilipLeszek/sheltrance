@@ -23,7 +23,8 @@ type CaseBuilder = {
 
 type Props = {};
 const ShelterCasesPage:  NextPage<Props> = (props) => {
-  const [casesArray, setCasesArray] = useState([]);
+  const [casesArray, setCasesArray] = useState<CaseInfo[]>([]);
+  const [currentWorker, setCurrentWorker] = useState<string>("all");
 
   useEffect(() => {
     async function getData() {
@@ -66,11 +67,30 @@ const ShelterCasesPage:  NextPage<Props> = (props) => {
         </tr>
     )
   }
+
+  const getFilteredMessages = (worker_id : string) => {
+
+  }
+
+  const handleWorkerSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    console.log(e.target.value)
+    getFilteredMessages(e.target.value)
+    setCurrentWorker(e.target.value)
+  }
+
   // @ts-ignore
   return (<> <Page children={
         <div className="w-min">
           <p className="text-4xl font-medium ml-4 mb-10 mt-8">Sprawy adopcyjne</p>
           <div className="overflow-x-auto">
+            <select onChange={handleWorkerSelect} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+              <option key="all" value="all">Nieprzypisano</option>
+              {
+                casesArray.map(case_ => 
+                  <option key={case_.assignedWorker.id} value={case_.assignedWorker.id}>{case_.assignedWorker.firstName} {case_.assignedWorker.lastName}</option>
+                )
+              }
+            </select>
             <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
               <thead className="ltr:text-left rtl:text-right">
               <tr>

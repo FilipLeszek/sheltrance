@@ -62,13 +62,13 @@ export default function MessagesPage() {
   const handleMessageTypeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     getFilteredMessages(currentContact,e.target.value)
     setMessageType(e.target.value)
-    
   }
 
   const handleCurrentUserSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     getFilteredMessages(e.target.value,messageType)
     setCurrentContact(e.target.value)
   }
+
   return (
       <>
         {/*@ts-ignore*/}
