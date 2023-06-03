@@ -90,9 +90,6 @@ export default function MessagesPage() {
                   [item["candidateContactInfo"], item])).values()].map(message => 
                     <option key={message.id} value={message.id}>{message.candidateContactInfo}</option>
                 )
-                // messages.map(message => 
-                //   <option key={message.id} value={message.id}>{message.candidateContactInfo}</option>
-                // )
               }
             </select>
             </div>
