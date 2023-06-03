@@ -17,9 +17,10 @@ type Messages = {
 export default function MessagesPage() {
   const [isOpen, setOpen] = useState(false);
   const [messages, setMessages] = useState<Messages[]>([]);
-
-  const [messageType, setMessageType] = useState("all");
+  const [filtredMessages, SetFiltredMessages] = useState<Messages[]>([]);
+  const [messageType, setMessageType] = useState<string>("all");
   const [currentContact, setCurrentContact] = useState<string>("all");
+
 
   useEffect(() => {
     fetch("/api/messages", {
@@ -31,21 +32,42 @@ export default function MessagesPage() {
         return res.json();
     }).then((res_data) => {
         setMessages(res_data.data);
+        SetFiltredMessages(res_data.data)
     },(err) => { 
         return console.error(err);
     });
   },[])
   
+  const getFilteredMessages = (contact_type : string, message_type : string) => {
+    let filteredByContact;
+    if(contact_type != "all"){
+      filteredByContact = messages.filter(message => message.id == Number(contact_type));
+    } else {
+      filteredByContact = messages;
+    }
+    let filteredByContactAndType;
+    if(message_type == "all"){
+      filteredByContactAndType = filteredByContact;
+    } else if(message_type == "open"){
+      filteredByContactAndType = filteredByContact.filter(message => message.worker != null);
+    } else {
+      filteredByContactAndType = filteredByContact.filter(message => message.worker == null);
+    }
+    SetFiltredMessages(filteredByContactAndType)
+  }
   const handleDropDown = () => {
     setOpen(!isOpen);
   };
 
   const handleMessageTypeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log(e.target.value)
+    getFilteredMessages(currentContact,e.target.value)
+    setMessageType(e.target.value)
+    
   }
 
   const handleCurrentUserSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log(e.target.value)
+    getFilteredMessages(e.target.value,messageType)
+    setCurrentContact(e.target.value)
   }
   return (
       <>
@@ -93,7 +115,7 @@ export default function MessagesPage() {
                   
                       <tbody className="divide-y divide-gray-200">
                         {
-                          messages.map(message =>
+                          filtredMessages.map(message =>
                             <tr key={message.id}>
                               <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                                   #{message.id}
