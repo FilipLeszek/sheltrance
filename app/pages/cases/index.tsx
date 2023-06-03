@@ -24,7 +24,7 @@ type CaseBuilder = {
 type Props = {};
 const ShelterCasesPage:  NextPage<Props> = (props) => {
   const [casesArray, setCasesArray] = useState<CaseInfo[]>([]);
-  const [currentWorker, setCurrentWorker] = useState<string>("all");
+  const [filtredCasesArray, SetFiltredCasesArray] = useState<CaseInfo[]>([]);
 
   useEffect(() => {
     async function getData() {
@@ -36,6 +36,7 @@ const ShelterCasesPage:  NextPage<Props> = (props) => {
       })
       let data = await response.json();
       setCasesArray(data.data)
+      SetFiltredCasesArray(data.data)
     }
     getData()
   }, [])
@@ -48,7 +49,7 @@ const ShelterCasesPage:  NextPage<Props> = (props) => {
             {employee.id}
           </td>
           <td className="whitespace-nowrap px-4 py-2 text-gray-700 text-center">
-            {employee.createdAt}
+            {employee.createdAt.toString().substring(0, 10)}
           </td>
           <td className="whitespace-nowrap px-4 py-2 text-gray-700 text-center">{employee.clientName}</td>
           <td className="whitespace-nowrap px-4 py-2 text-gray-700 text-center">{employee.assignedWorker.email}</td>
@@ -69,13 +70,16 @@ const ShelterCasesPage:  NextPage<Props> = (props) => {
   }
 
   const getFilteredMessages = (worker_id : string) => {
-
+    if(worker_id == "all"){
+      SetFiltredCasesArray(casesArray)
+    } else{
+      SetFiltredCasesArray(casesArray.filter(case_ => case_.assignedWorker.id == Number(worker_id)))
+    }
   }
 
   const handleWorkerSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     console.log(e.target.value)
     getFilteredMessages(e.target.value)
-    setCurrentWorker(e.target.value)
   }
 
   // @ts-ignore
@@ -86,7 +90,8 @@ const ShelterCasesPage:  NextPage<Props> = (props) => {
             <select onChange={handleWorkerSelect} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
               <option key="all" value="all">Nieprzypisano</option>
               {
-                casesArray.map(case_ => 
+                [...new Map(casesArray.map(item =>
+                  [item["assignedWorker"]['id'], item])).values()].map(case_ => 
                   <option key={case_.assignedWorker.id} value={case_.assignedWorker.id}>{case_.assignedWorker.firstName} {case_.assignedWorker.lastName}</option>
                 )
               }
@@ -107,7 +112,7 @@ const ShelterCasesPage:  NextPage<Props> = (props) => {
               </thead>
 
               <tbody className="divide-y divide-gray-200">
-              {casesArray && casesArray.map((e: CaseInfo) =>
+              {filtredCasesArray && filtredCasesArray.map((e: CaseInfo) =>
                   <EmployeeListItem key={e.id} employee={e}/>
               )}
               </tbody>
