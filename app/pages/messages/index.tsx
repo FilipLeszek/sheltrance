@@ -2,16 +2,22 @@ import Page from "@/components/page/Page";
 import styles from './Messages.module.css';
 import { useEffect, useState } from "react";
 
+type WorkerInfo = {
+  firstName: String,
+  lastName: String
+}
+
 type Messages = {
-  id: number,
-  date: string,
-  candidate: string,
-  worker: string
+  id:number,
+  date: Date,
+  candidateContactInfo: string,
+  worker: WorkerInfo | null,
 }
 
 export default function MessagesPage() {
   const [isOpen, setOpen] = useState(false);
   const [messages, setMessages] = useState<Messages[]>([]);
+
   useEffect(() => {
     fetch("/api/messages", {
       method: "GET",
@@ -47,7 +53,7 @@ export default function MessagesPage() {
               <select className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
               {
                 messages.map(message => 
-                  <option key={message.id} value={message.id}>{message.candidate}</option>
+                  <option key={message.id} value={message.id}>{message.candidateContactInfo}</option>
                 )
               }
               </select>
@@ -80,9 +86,9 @@ export default function MessagesPage() {
                               <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                                   #{message.id}
                                 </td>
-                                <td className="whitespace-nowrap px-4 py-2 text-gray-700">{message.date}</td>
-                                <td className="whitespace-nowrap px-4 py-2 text-gray-700">{message.candidate}</td>
-                                <td className="whitespace-nowrap px-4 py-2 text-gray-700">{message.worker}</td>
+                                <td className="whitespace-nowrap px-4 py-2 text-gray-700">{message.date.toString().substring(0, 10)}</td>
+                                <td className="whitespace-nowrap px-4 py-2 text-gray-700">{message.candidateContactInfo}</td>
+                                <td className="whitespace-nowrap px-4 py-2 text-gray-700">{message.worker?.firstName} {message.worker?.lastName}</td>
                                 <td className="whitespace-nowrap px-4 py-2">
                                   <a
                                     href={`/messages/${message.id}`}

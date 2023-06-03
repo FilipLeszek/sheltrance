@@ -21,6 +21,7 @@ model AppUser {
   shelter     Shelter    @relation(fields: [shelterId], references: [id])
   shelterId   Int
   adoptions   Adoption[]
+  messages    Message[]
 }
 
 model Shelter {
@@ -55,4 +56,17 @@ model AdoptionStage {
   isFinished   Boolean  @default(false)
   adoption     Adoption @relation(fields: [adoptionId], references: [id])
   adoptionId   Int
+}
+
+model Message{
+  id                   Int @id @default(autoincrement())
+  date                 DateTime @default(now())
+  petId                Int
+  petName              String
+  candidateFirstName   String
+  candidateLastName    String
+  candidateContactInfo String
+  worker               AppUser? @relation(fields: [workerId], references: [id])
+  workerId             Int
+  message              String
 }
