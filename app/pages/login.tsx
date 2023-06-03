@@ -3,16 +3,18 @@ import { NextPage } from "next";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import LoginStructure from "@/components/login/LoginStructure";
 import Input from "@/components/login/Input";
+import ErrorAlert from "@/components/alerts/ErrorAlert";
+import { AlertMessage } from "@/types/alerts";
 
-type Props = {
-  // Add custom props here
-};
+type Props = {};
 
 const Login: NextPage<Props> = (props) => {
   const router = useRouter();
+
+  const [error, setError] = useState<AlertMessage>();
 
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -31,9 +33,12 @@ const Login: NextPage<Props> = (props) => {
 
     if (result?.ok) {
       router.push("/");
-    }
-    else {
-      alert(result?.error);
+    } else {
+      setError({
+        title: "Błąd logowania",
+        message: "Nie znaleziono użytkownika dla podanych danych.",
+      });
+      console.error(result?.error);
     }
   };
 
@@ -45,15 +50,18 @@ const Login: NextPage<Props> = (props) => {
           className="flex flex-col w-full md:h-[25%] xl:h-[35%] justify-around text-center"
         >
           <div className="text-4xl">Zaloguj się</div>
-          <Input reference={emailRef} type="text" placeholder="Login" />
+          <Input reference={emailRef} type="text" placeholder="Email" />
           <Input reference={passwordRef} type="password" placeholder="Hasło" />
           <Button type="submit">Zaloguj się</Button>
         </form>
         <div className="flex flex-row w-52 justify-between text-gray-500">
           <div>Nie masz konta?</div>
-          <Link href={"/register"} className="underline">Zarejestruj</Link>
+          <Link href={"/register"} className="underline">
+            Zarejestruj
+          </Link>
         </div>
       </div>
+      <ErrorAlert error={error} />
     </LoginStructure>
   );
 };

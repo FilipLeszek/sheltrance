@@ -1,10 +1,12 @@
 import Button from "@/components/Button";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import LoginStructure from "@/components/login/LoginStructure";
 import Input from "@/components/login/Input";
 import Link from "next/link";
+import ErrorAlert from "@/components/alerts/ErrorAlert";
+import { AlertMessage } from "@/types/alerts";
 
 type UserBuilder = {
   name: string;
@@ -21,6 +23,8 @@ type Props = {};
 const Register: NextPage<Props> = (props) => {
   const router = useRouter();
 
+  const [error, setError] = useState<AlertMessage>();
+
   const emailRef = useRef<HTMLInputElement>(null);
   const firstNameRef = useRef<HTMLInputElement>(null);
   const lastNameRef = useRef<HTMLInputElement>(null);
@@ -32,37 +36,33 @@ const Register: NextPage<Props> = (props) => {
   const addressRef = useRef<HTMLInputElement>(null);
 
   const registerHandler = async () => {
-    const email = emailRef.current?.value;
-    const name = nameRef.current?.value;
-    const password1 = passwordRef1.current?.value;
-    const password2 = passwordRef2.current?.value;
-    const firstName = firstNameRef.current?.value;
-    const lastName = lastNameRef.current?.value;
-    const phone = phoneRef.current?.value;
-    const address = addressRef.current?.value;
+    const email = emailRef.current!.value;
+    const name = nameRef.current!.value;
+    const password1 = passwordRef1.current!.value;
+    const password2 = passwordRef2.current!.value;
+    const firstName = firstNameRef.current!.value;
+    const lastName = lastNameRef.current!.value;
+    const phone = phoneRef.current!.value;
+    const address = addressRef.current!.value;
 
-    if (name!.trim().length <= 4) {
-      alert("Username is too short.");
-      return;
-    }
-    if (password1 !== password2) {
-      alert("Passwords are not the same.");
-      return;
-    }
-    if (password1?.length === 0) {
-      alert("Passwords are empty.");
+    const userData: UserBuilder = {
+      email: email,
+      password: password1,
+      name: name.trim(),
+      address: address,
+      firstName: firstName,
+      lastName: lastName,
+      phoneNumber: phone,
+    };
+
+    const { isError, error: errorData } = checkInputs(userData, password2);
+
+    if (isError) {
+      setError(errorData);
       return;
     }
 
-    await addUser({
-      email: email!,
-      password: password1!,
-      name: name!.trim(),
-      address: address!,
-      firstName: firstName!,
-      lastName: lastName!,
-      phoneNumber: phone!,
-    });
+    await addUser(userData);
 
     router.push("/login");
   };
@@ -80,7 +80,11 @@ const Register: NextPage<Props> = (props) => {
         <Input reference={lastNameRef} type="text" placeholder="Nazwisko" />
         <Input reference={phoneRef} type="text" placeholder="Numer telefonu" />
         <Input reference={passwordRef1} type="password" placeholder="Hasło" />
-        <Input reference={passwordRef2} type="password" placeholder="Powtórz hasło" />
+        <Input
+          reference={passwordRef2}
+          type="password"
+          placeholder="Powtórz hasło"
+        />
         <Input reference={nameRef} type="text" placeholder="Nazwa" />
         <Input reference={addressRef} type="text" placeholder="Adres" />
         <Button onClick={registerHandler}>Zarejestruj</Button>
@@ -93,6 +97,7 @@ const Register: NextPage<Props> = (props) => {
           </div>
         </div>
       </div>
+      <ErrorAlert error={error} />
     </LoginStructure>
   );
 };
@@ -107,6 +112,28 @@ async function addUser(userdata: UserBuilder) {
   });
 
   if (!response.ok) alert(await response.text());
+}
+
+function checkInputs(
+  userData: UserBuilder,
+  passwd2: string
+): { isError: boolean; error: AlertMessage } {
+  let error: AlertMessage = { title: "Błąd rejestracji", message: "" };
+
+  const inputsLengthList = Object.values(userData).map(
+    (val) => val.trim().length
+  );
+
+  if (inputsLengthList.some((val) => val === 0)) {
+    error.message = "Proszę wypełnić wszystkie pola tekstowe.";
+  } else if (userData.name.trim().length <= 4) {
+    error.message = "Login powinien zawierać przynajmniej 4 znaki.";
+  } else if (userData.password.length === 0 || passwd2.length === 0) {
+    error.message = "Proszę wpisać hasło.";
+  } else if (userData.password !== passwd2) {
+    error.message = "Podane hasła nie zgadzają się.";
+  }
+  return { isError: error.message.length !== 0, error: error };
 }
 
 export default Register;
