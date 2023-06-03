@@ -2,11 +2,24 @@ import { parseDataFromReq } from "@/lib/api-utils";
 import { PrismaClient } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
 
+// type Messages = {
+//     id: number,
+//     date: string,
+//     candidate: string,
+//     worker: string
+// }
+
+
+
+type WorkerInfo = {
+  firstName: String,
+  lastName: String
+}
 type Messages = {
-    id: number,
-    date: string,
-    candidate: string,
-    worker: string
+  id:number,
+  date: Date,
+  candidateContactInfo: string,
+  worker: WorkerInfo | null,
 }
 
 type ResponseData = {
@@ -21,29 +34,39 @@ export default async function handler(
   // 405 - wrong method
   // 400 - database error
 
+
   if (req.method !== "GET") {
     return res.status(405).json({ error: "Bad method." });
   }
+  
+  const prisma = new PrismaClient();
 
+  try {
+    const messages = await prisma.message.findMany({
+      select: {
+        id: true,
+        date: true,
+        petId: false,
+        petName: false,
+        candidateFirstName: false,
+        candidateLastName: false,
+        candidateContactInfo: true,
+        worker: {
+          select:{
+            firstName : true,
+            lastName : true
+          }
+        },
+        workerId: false,
+        message: false
+      },
+      
+    });
 
-  return res.status(200).json({data: [
-    {
-      id: 1234, 
-      date: "17.03.2023", 
-      candidate: "jan.kowalski@gmail.com", 
-      worker: "Jan Kowalski"
-    },
-    {
-      id: 1235, 
-      date: "17.03.2023", 
-      candidate: "jan2.kowalski@gmail.com", 
-      worker: "Jan Kowalski"
-    },
-    {
-      id: 1236, 
-      date: "17.03.2023", 
-      candidate: "jan3.kowalski@gmail.com", 
-      worker: "Marek Kowalski"
-    }]
-  });
+    return res.status(200).json({data: messages});
+  } catch (error: any) {
+    return res.status(400).json({ error: error.message });
+  } finally {
+    await prisma.$disconnect();
+  }
 }
