@@ -30,6 +30,7 @@ model Shelter {
   address   String
   workers   AppUser[]
   adoptions Adoption[]
+  messages  Message[]
 }
 
 model Adoption {
@@ -66,7 +67,10 @@ model Message{
   candidateFirstName   String
   candidateLastName    String
   candidateContactInfo String
+  isFinished           Boolean @default(false)
   worker               AppUser? @relation(fields: [workerId], references: [id])
-  workerId             Int
+  workerId             Int?
+  shelter              Shelter @relation(fields: [shelterId], references: [id])
+  shelterId            Int
   message              String
 }

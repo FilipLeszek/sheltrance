@@ -1,5 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { authOptions } from "../auth/[...nextauth]";
+import { getServerSession } from "next-auth";
 
 type WorkerInfo = {
   firstName: String,
@@ -30,30 +32,38 @@ export default async function handler(
   }
   
   const prisma = new PrismaClient();
+  const session = await getServerSession(req, res, authOptions)
 
-  try {
-    const messages = await prisma.message.findMany({
-      select: {
-        id: true,
-        date: true,
-        petId: false,
-        petName: false,
-        candidateFirstName: false,
-        candidateLastName: false,
-        candidateContactInfo: true,
-        worker: {
-          select:{
-            firstName : true,
-            lastName : true
-          }
+  try {if(session?.user?.shelterId){
+      const messages = await prisma.message.findMany({
+        select: {
+          id: true,
+          date: true,
+          petId: false,
+          petName: false,
+          candidateFirstName: false,
+          candidateLastName: false,
+          candidateContactInfo: true,
+          worker: {
+            select:{
+              firstName : true,
+              lastName : true
+            }
+          },
+          workerId: false,
+          message: false, 
+          shelter: false,
+          shelterId: false
         },
-        workerId: false,
-        message: false
-      },
-      
-    });
+        where:{
+          shelterId: session.user.shelterId
+        }
+      });
+      return res.status(200).json({data: messages});
+    } else {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
 
-    return res.status(200).json({data: messages});
   } catch (error: any) {
     return res.status(400).json({ error: error.message });
   } finally {
