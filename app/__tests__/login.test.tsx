@@ -1,9 +1,7 @@
-import {render} from "@testing-library/react";
-import LoginStructure from "@/components/login/LoginStructure";
+import { render } from "@testing-library/react";
 
-describe('Login page',  () => {
-  it('should render login page', function () {
-    render(<LoginStructure/>)
+describe("Login page", () => {
+  it("should render login page", function () {
+    cy.mount(<LoginStructure />);
   });
-
 });
