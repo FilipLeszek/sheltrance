@@ -21,7 +21,7 @@ const ErrorAlert: React.FC<{
   }, [props.error]);
 
   return (
-    <div className="absolute w-full left-0 top-0 flex justify-center duration-[3000]">
+    <div className="absolute w-full left-0 top-0 flex justify-center">
       <CSSTransition
         in={isActive}
         timeout={props.time ? props.time : 300}
