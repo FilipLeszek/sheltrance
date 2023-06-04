@@ -20,8 +20,6 @@ export default async function handler(
   const session = await getServerSession(req, res, authOptions);
 
   if (req.method === "GET") {
-
-
     try {
       const cases = await prisma.adoption.findMany({
         where: {
@@ -50,45 +48,50 @@ export default async function handler(
       clientContact,
       animalName,
     } = req.body;
-    // TUTAJ trzeba utworzyc sprawe na bazie
-    const adoption = await prisma.adoption.create({
-          data: {
-            animalId: animalId,
-            animalName: animalName,
-            clientName: clientName,
-            clientSurname: clientSurname,
-            clientContact: clientContact,
-            stages: {
-              create: [
-                {
-                  description: "",
-                  name: "",
-                  dateFinished: "",
-                },
-                {
-                  description: "",
-                  name: "",
-                  dateFinished: "",
-                },
-                {
-                  description: "",
-                  name: "",
-                  dateFinished: "",
-                },
-                {
-                  description: "",
-                  name: "",
-                  dateFinished: "",
-                },
-              ],
-            },
-            isFinished: false,
-            shelterId: session?.user?.shelterId,
-            userId: session?.user?.id || 1
+    try {
+      await prisma.adoption.create({
+            data: {
+              animalId: animalId,
+              animalName: animalName,
+              clientName: clientName,
+              clientSurname: clientSurname,
+              clientContact: clientContact,
+              stages: {
+                create: [
+                  {
+                    description: "",
+                    name: "",
+                    dateFinished: "",
+                  },
+                  {
+                    description: "",
+                    name: "",
+                    dateFinished: "",
+                  },
+                  {
+                    description: "",
+                    name: "",
+                    dateFinished: "",
+                  },
+                  {
+                    description: "",
+                    name: "",
+                    dateFinished: "",
+                  },
+                ],
+              },
+              isFinished: false,
+              shelterId: session?.user?.shelterId,
+              userId: session?.user?.id || 1
+            }
           }
-        }
-    );
-    res.status(200);
+      );
+      res.status(200).end();
+    } catch (error: any) {
+      return res.status(400).json({ error: error.message });
+    } finally {
+      await prisma.$disconnect();
+    }
   }
   else return res.status(405).json({ error: "Bad method." });
 }

@@ -49,17 +49,17 @@ const AdoptionDetailsPage:  NextPage<Props> = (props) => {
       setFirstStepComment(data.data?.stages[0]?.description);
       setFirstStepDate(data.data?.stages[0]?.dateFinished);
 
-      setSecondStepFinish(data.data?.stages[1].isFinished);
-      setSecondStepComment(data.data?.stages[1].description);
-      setSecondStepDate(data.data?.stages[1].dateFinished);
+      setSecondStepFinish(data.data?.stages[1]?.isFinished);
+      setSecondStepComment(data.data?.stages[1]?.description);
+      setSecondStepDate(data.data?.stages[1]?.dateFinished);
 
-      setThirdStepFinish(data.data?.stages[2].isFinished);
-      setThirdStepComment(data.data?.stages[2].description);
-      setThirdStepDate(data.data?.stages[2].dateFinished);
+      setThirdStepFinish(data.data?.stages[2]?.isFinished);
+      setThirdStepComment(data.data?.stages[2]?.description);
+      setThirdStepDate(data.data?.stages[2]?.dateFinished);
 
-      setFourthStepFinish(data.data?.stages[3].isFinished);
-      setFourthStepComment(data.data?.stages[3].description);
-      setFourthStepDate(data.data?.stages[3].dateFinished);
+      setFourthStepFinish(data.data?.stages[3]?.isFinished);
+      setFourthStepComment(data.data?.stages[3]?.description);
+      setFourthStepDate(data.data?.stages[3]?.dateFinished);
     }
     getData()
   }, [id])
@@ -85,7 +85,6 @@ const AdoptionDetailsPage:  NextPage<Props> = (props) => {
   }
 
   const saveChanges = async () => {
-    console.log(firstStepFinish)
     const adoptionInfo = {
       firstStepDate: firstStepDate,
       firstStepFinish: firstStepFinish,
@@ -156,7 +155,7 @@ const AdoptionDetailsPage:  NextPage<Props> = (props) => {
                 <p className="text-2xl font-medium mt-1 mb-1">Data rozpoczęcia</p>
                 <div>
                   <label className="block text-xl font-soft text-gray-700">
-                    {adoptionDetails?.createdAt}
+                    {adoptionDetails?.createdAt?.toString().substring(0, 10)}
                   </label>
                 </div>
               </div>
@@ -177,26 +176,26 @@ const AdoptionDetailsPage:  NextPage<Props> = (props) => {
                     className="relative after:absolute after:inset-x-0 after:top-1/2 after:block after:h-0.5 after:-translate-y-1/2 after:rounded-lg after:bg-gray-100"
                 >
                   <ol className="relative z-10 flex justify-between text-sm font-medium text-gray-500">
-                    <li className="flex items-center gap-2 bg-white p-2" onClick={() => changeStep(1)}>
+                    <li className="flex items-center gap-2 bg-white p-2 cursor-pointer" onClick={() => changeStep(1)}>
                       <span className={`h-6 w-6 rounded-full text-center text-[10px]/6 font-bold ${formStep === 1 ? "bg-blue-600 text-white" : "bg-gray-100"}`}>
                         1
                       </span>
                       <span className="hidden sm:block"> Rozmowa i ankieta </span>
                     </li>
 
-                    <li className="flex items-center gap-2 bg-white p-2" onClick={() => changeStep(2)}>
+                    <li className="flex items-center gap-2 bg-white p-2 cursor-pointer" onClick={() => changeStep(2)}>
                       <span className={`h-6 w-6 rounded-full text-center text-[10px]/6 font-bold ${formStep === 2 ? "bg-blue-600 text-white" : "bg-gray-100"}`}>
                         2
                       </span>
                       <span className="hidden sm:block"> Zapoznanie w schronisku</span>
                     </li>
-                    <li className="flex items-center gap-2 bg-white p-2" onClick={() => changeStep(3)}>
+                    <li className="flex items-center gap-2 bg-white p-2 cursor-pointer" onClick={() => changeStep(3)}>
                       <span className={`h-6 w-6 rounded-full text-center text-[10px]/6 font-bold ${formStep === 3 ? "bg-blue-600 text-white" : "bg-gray-100"}`}>
                         3
                       </span>
                       <span className="hidden sm:block"> Wizyta przedadopcyjna </span>
                     </li>
-                    <li className="flex items-center gap-2 bg-white p-2" onClick={() => changeStep(4)}>
+                    <li className="flex items-center gap-2 bg-white p-2 cursor-pointer" onClick={() => changeStep(4)}>
                       <span className={`h-6 w-6 rounded-full text-center text-[10px]/6 font-bold ${formStep === 4 ? "bg-blue-600 text-white" : "bg-gray-100"}`}>
                         4
                       </span>
