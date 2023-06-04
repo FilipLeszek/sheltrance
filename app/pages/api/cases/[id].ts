@@ -1,12 +1,13 @@
 import { PrismaClient } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
-import {Simulate} from "react-dom/test-utils";
-import error = Simulate.error;
 import {getServerSession} from "next-auth";
 import {authOptions} from "@/pages/api/auth/[...nextauth]";
 
 type Stage = {
-
+  id: number,
+  description: string;
+  isFinished: boolean;
+  dateFinished: string;
 }
 
 export type Adoption = {
@@ -38,7 +39,7 @@ export default async function handler(
     case "GET":
       try {
         if (!query.id) {
-          return res.status(400).json({ error: error.message });
+          return res.status(400).json({ error: 'Case id not given' });
         }
           const adoption = await prisma.adoption.findFirst({
             where: {
@@ -84,10 +85,9 @@ export default async function handler(
         id
       } = req.body;
 
-      await prisma.adoption.update({
+      const stageOne = await prisma.adoption.update({
         where : {
           id: id,
-          shelterId: session?.user?.id,
         },
         data: {
           stages: {
@@ -106,10 +106,9 @@ export default async function handler(
         }
       });
 
-      await prisma.adoption.update({
+      const stageTwo = await prisma.adoption.update({
         where : {
           id: id,
-          shelterId: session?.user?.id,
         },
         data: {
           stages: {
@@ -127,10 +126,9 @@ export default async function handler(
         }
       });
 
-      await prisma.adoption.update({
+      const stageThree = await prisma.adoption.update({
         where : {
           id: id,
-          shelterId: session?.user?.id,
         },
         data: {
           stages: {
@@ -147,10 +145,10 @@ export default async function handler(
           }
         }
       });
-      await prisma.adoption.update({
+
+      const stageFour = await prisma.adoption.update({
         where : {
           id: id,
-          shelterId: session?.user?.id,
         },
         data: {
           stages: {
@@ -168,7 +166,6 @@ export default async function handler(
           }
         }
       });
-
       return res.status(200).end('ok');
       break;
     default:
@@ -176,8 +173,4 @@ export default async function handler(
       return res.status(405).end(`Method ${method} Not Allowed`);
       break;
   }
-
-
-
-
 }

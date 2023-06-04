@@ -2,6 +2,9 @@ import {NextPage} from "next";
 import {useEffect, useState} from "react";
 import Page from "../../components/page/Page";
 import WorkerButton from "../../components/shelter/workers/WorkerButton";
+import AdoptionDialog from "@/components/cases/AdoptionDialog";
+import {AlertMessage} from "@/types/alerts";
+import ErrorAlert from "@/components/alerts/ErrorAlert";
 
 export type CaseInfo = {
   id: number;
@@ -11,19 +14,20 @@ export type CaseInfo = {
   isFinished: boolean;
 };
 
-type CaseBuilder = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  shelterId: number;
-};
-
+type WorkerDetails = {
+ id: number;
+ firstName: string;
+ lastName: string;
+}
 
 type Props = {};
+
 const ShelterCasesPage:  NextPage<Props> = (props) => {
   const [casesArray, setCasesArray] = useState<CaseInfo[]>([]);
   const [filtredCasesArray, setFiltredCasesArray] = useState<CaseInfo[]>([]);
-  const [workers, setWorkers] = useState<>([]);
+  const [workers, setWorkers] = useState<WorkerDetails[]>([]);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [error, setError] = useState<AlertMessage>();
 
   useEffect(() => {
     async function getData() {
@@ -36,7 +40,7 @@ const ShelterCasesPage:  NextPage<Props> = (props) => {
       let data = await response.json();
       setCasesArray(data.data)
       setFiltredCasesArray(data.data)
-      const tempWorkers = [];
+      const tempWorkers: WorkerDetails[] = [];
       casesArray.forEach((item) => {
         const assignedWorker = item.assignedWorker;
         if (assignedWorker) {
@@ -91,9 +95,19 @@ const ShelterCasesPage:  NextPage<Props> = (props) => {
     getFilteredMessages(e.target.value)
   }
 
+  const onModalClose = (isOpen: boolean, message?: string) => {
+    setDialogOpen(isOpen);
+    setError({
+      title: 'Wystąpił błąd podczas tworzenia sprawy',
+      message: message || ''
+    });
+  }
+
   // @ts-ignore
-  return (<> <Page children={
+  return (<>
+        <Page children={
         <div className="mr-2">
+          <AdoptionDialog show={dialogOpen} setDialogOpen={onModalClose}></AdoptionDialog>
           <p className="text-4xl font-medium ml-4 mb-10 mt-8">Sprawy adopcyjne</p>
           <div className="mr-[25%] flex align-end justify-end">
               <select onChange={handleWorkerSelect} className="w-72 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -131,8 +145,7 @@ const ShelterCasesPage:  NextPage<Props> = (props) => {
             </table>
           </div>
           <div className="flex flex-row-reverse mr-[25%] mt-6 ">
-            <WorkerButton onClick={() => {addNewCase({
-              animalId: 1, animalName: 'Kazik', clientName: 'Ola', clientSurname: 'Jaworska', clientContact: 'ola@j.pl'})}}>
+            <WorkerButton onClick={() => {setDialogOpen(true)}}>
               Dodaj sprawę
               <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -148,23 +161,11 @@ const ShelterCasesPage:  NextPage<Props> = (props) => {
               </svg>
             </WorkerButton>
           </div>
+          <ErrorAlert error={error} time={6000}/>
         </div>
-      }/>
+        }/>
       </>
   )
 }
 
-
-async function addNewCase(caseInfo: { clientName: string; clientContact: string; clientSurname: string; animalName: string; animalId: number }) {
-  const response = await fetch("/api/cases", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(caseInfo),
-  });
-  if (response.ok) {
-  }
-  if (!response.ok) alert(await response.text());
-}
 export default ShelterCasesPage;

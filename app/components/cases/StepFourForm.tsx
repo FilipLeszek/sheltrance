@@ -27,18 +27,20 @@ const StepOneForm: React.FC<StepFourFormProps> = (props) => {
         </div>
         <div className="flex flex-col ml-10 justify-content">
           <label htmlFor="stepFourFinish" className="text-lg font-semibold mb-1"> Czy chcesz zakończyć etap?</label>
-          <input
-              value={props.fourthStepFinish}
-              onChange={props.onInputFinished}
-              checked={props.fourthStepFinish as boolean}
-              type="checkbox"
-              id="stepFourFinish"
-              placeholder=""
-              className="h-5 rounded-md border-gray-200 shadow-sm sm:text-sm mt-3"
-          />
+          <div  className="flex mt-3 justify-center align-center">
+            <input
+                value={props.fourthStepFinish}
+                onChange={props.onInputFinished}
+                checked={props.fourthStepFinish as unknown as boolean}
+                type="checkbox"
+                id="stepFourFinish"
+                placeholder=""
+                className="h-6 w-6 rounded-md border-gray-200 shadow-sm"
+            />
+            <p className="text-sm  h-8 w-8 font-bold ml-1">Tak</p>
+          </div>
         </div>
       </div>
-
       <div className="flex flex-col">
         <label htmlFor="stepFourComment" className="text-lg font-semibold mb-1"> Uwagi do przebiegu etapu </label>
         <textarea

@@ -24,7 +24,7 @@ const ErrorAlert: React.FC<{
     <div className="absolute w-full left-0 top-0 flex justify-center duration-[3000]">
       <CSSTransition
         in={isActive}
-        timeout={props.time ? props.time : 300}
+        timeout={props.time ? props.time : 3000}
         classNames={{
           enter: "opacity-0 translate-y-[-100px]",
           enterActive:
