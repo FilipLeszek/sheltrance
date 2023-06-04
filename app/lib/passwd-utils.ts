@@ -1,9 +1,10 @@
 import bcrypt from "bcrypt";
 
-export function hashPassword(unHashPass: string) {
+export async function hashPassword(unHashPass: string) {
   return bcrypt.hash(unHashPass, 10).then((result) => result);
 }
 
-export function comparePasswords(unHashPass: string, hashPass: string) {
-  return bcrypt.compare(unHashPass, hashPass).then((result) => result);
+export async function comparePasswords(unHashPass: string, hashPass: string) {
+  const result = await bcrypt.compare(unHashPass, hashPass);
+  return result;
 }
