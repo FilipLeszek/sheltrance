@@ -14,11 +14,10 @@ type Props = {};
 const AdoptionDetailsPage:  NextPage<Props> = (props) => {
 
   const router = useRouter()
-  const id = router.query.id as string
+  const id = router.query.id;
 
   const [adoptionDetails, setAdoptionDetails] = useState({} as unknown as Adoption);
   const [formStep, setFormStep] = useState(1);
-
 
   const [firstStepDate, setFirstStepDate] = useState("");
   const [firstStepFinish, setFirstStepFinish] = useState("");
@@ -46,6 +45,21 @@ const AdoptionDetailsPage:  NextPage<Props> = (props) => {
       })
       let data = await response.json();
       setAdoptionDetails(data.data)
+      setFirstStepFinish(data.data?.stages[0]?.isFinished);
+      setFirstStepComment(data.data?.stages[0]?.description);
+      setFirstStepDate(data.data?.stages[0]?.dateFinished);
+
+      setSecondStepFinish(data.data?.stages[1].isFinished);
+      setSecondStepComment(data.data?.stages[1].description);
+      setSecondStepDate(data.data?.stages[1].dateFinished);
+
+      setThirdStepFinish(data.data?.stages[2].isFinished);
+      setThirdStepComment(data.data?.stages[2].description);
+      setThirdStepDate(data.data?.stages[2].dateFinished);
+
+      setFourthStepFinish(data.data?.stages[3].isFinished);
+      setFourthStepComment(data.data?.stages[3].description);
+      setFourthStepDate(data.data?.stages[3].dateFinished);
     }
     getData()
   }, [id])
@@ -58,20 +72,49 @@ const AdoptionDetailsPage:  NextPage<Props> = (props) => {
   function CurrentStepForm(num: number) {
     switch(num) {
       case 1:
-        return <StepOneForm firstStepComment={firstStepComment} firstStepDate={firstStepDate} firstStepFinish={firstStepFinish} onInputDate={(e) => setFirstStepDate(e.target.value)} onInputComment={(e) => setFirstStepComment(e.target.value)} onInputFinished={(e) => setFirstStepFinish(e.target.value)}/>;
+        return <StepOneForm firstStepComment={firstStepComment} firstStepDate={firstStepDate} firstStepFinish={firstStepFinish} onInputDate={(e) => setFirstStepDate(e.target.value)} onInputComment={(e) => setFirstStepComment(e.target.value)} onInputFinished={(e) => setFirstStepFinish(e.target.checked)}/>;
       case 2:
-        return <StepTwoForm secondStepComment={secondStepComment} secondStepDate={secondStepDate} secondStepFinish={secondStepFinish} onInputDate={(e) => setSecondStepDate(e.target.value)} onInputComment={(e) => setSecondStepComment(e.target.value)} onInputFinished={(e) => setSecondStepFinish(e.target.value)}/>;
+        return <StepTwoForm secondStepComment={secondStepComment} secondStepDate={secondStepDate} secondStepFinish={secondStepFinish} onInputDate={(e) => setSecondStepDate(e.target.value)} onInputComment={(e) => setSecondStepComment(e.target.value)} onInputFinished={(e) => setSecondStepFinish(e.target.checked)}/>;
       case 3:
-        return <StepThreeForm thirdStepComment={thirdStepComment} thirdStepDate={thirdStepDate} thirdStepFinish={thirdStepFinish} onInputDate={(e) => setThirdStepDate(e.target.value)} onInputComment={(e) => setThirdStepComment(e.target.value)} onInputFinished={(e) => setThirdStepFinish(e.target.value)}/>;
+        return <StepThreeForm thirdStepComment={thirdStepComment} thirdStepDate={thirdStepDate} thirdStepFinish={thirdStepFinish} onInputDate={(e) => setThirdStepDate(e.target.value)} onInputComment={(e) => setThirdStepComment(e.target.value)} onInputFinished={(e) => setThirdStepFinish(e.target.checked)}/>;
       case 4: 
-        return <StepFourForm fourthStepComment={fourthStepComment} fourthStepDate={fourthStepDate} fourthStepFinish={fourthStepFinish} onInputDate={(e) => setFourthStepDate(e.target.value)} onInputComment={(e) => setFourthStepComment(e.target.value)} onInputFinished={(e) => setFourthStepFinish(e.target.value)}/>;
+        return <StepFourForm fourthStepComment={fourthStepComment} fourthStepDate={fourthStepDate} fourthStepFinish={fourthStepFinish} onInputDate={(e) => setFourthStepDate(e.target.value)} onInputComment={(e) => setFourthStepComment(e.target.value)} onInputFinished={(e) => setFourthStepFinish(e.target.checked)}/>;
       default:
-        return <StepOneForm firstStepComment={firstStepComment} firstStepDate={firstStepDate} firstStepFinish={firstStepFinish} onInputDate={(e) => setFirstStepDate(e.target.value)} onInputComment={(e) => setFirstStepComment(e.target.value)} onInputFinished={(e) => setFirstStepFinish(e.target.value)}/>;
+        return <StepOneForm firstStepComment={firstStepComment} firstStepDate={firstStepDate} firstStepFinish={firstStepFinish} onInputDate={(e) => setFirstStepDate(e.target.value)} onInputComment={(e) => setFirstStepComment(e.target.value)} onInputFinished={(e) => setFirstStepFinish(e.target.checked)}/>;
     }
   }
 
-  const saveChanges = () => {
-    console.log(firstStepComment)
+  const saveChanges = async () => {
+    console.log(firstStepFinish)
+    const adoptionInfo = {
+      firstStepDate: firstStepDate,
+      firstStepFinish: firstStepFinish,
+      firstStepComment: firstStepComment,
+      secondStepDate: secondStepDate,
+      secondStepFinish: secondStepFinish,
+      secondStepComment: secondStepComment,
+      thirdStepDate: thirdStepDate,
+      thirdStepFinish: thirdStepFinish,
+      thirdStepComment: thirdStepComment,
+      fourthStepDate: fourthStepDate,
+      fourthStepFinish: fourthStepFinish,
+      fourthStepComment: fourthStepComment,
+      id: adoptionDetails.id,
+      firstStageId: adoptionDetails.stages[0].id,
+      secondStageId: adoptionDetails.stages[1].id,
+      thirdStageId: adoptionDetails.stages[2].id,
+      fourthStageId: adoptionDetails.stages[3].id,
+    };
+    const response = await fetch(`/api/cases/${adoptionDetails.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(adoptionInfo),
+    });
+    if (response.ok) {
+    }
+    if (!response.ok) alert(await response.text());
   }
 
   return (
@@ -79,23 +122,23 @@ const AdoptionDetailsPage:  NextPage<Props> = (props) => {
         {/*@ts-ignore*/}
         <Page children={
           <div className="w-max">
-            <p className="text-4xl font-medium ml-4 mb-10 mt-8">Sprawa adopcyjna numer {adoptionDetails.id}</p>
+            <p className="text-4xl font-medium ml-4 mb-10 mt-8">Sprawa adopcyjna numer {adoptionDetails?.id}</p>
             <div className="mt-1 mb-2 flex">
               <div className="ml-6 bg-slate-200 rounded-lg pl-4 pr-8 py-4">
                 <p className="text-2xl font-medium mt-1 mb-1">Dane osoby adoptującej</p>
                 <div className="">
                   <label className="block text-xl font-soft text-gray-700">
-                    Imię: {adoptionDetails.clientName}
+                    Imię: {adoptionDetails?.clientName}
                   </label>
                 </div>
                 <div className="mt-4">
                   <label className="block text-xl font-soft text-gray-700">
-                   Nazwisko: {adoptionDetails.clientSurname}
+                   Nazwisko: {adoptionDetails?.clientSurname}
                   </label>
                 </div>
                 <div className="mt-4">
                   <label className="block text-xl font-soft text-gray-700">
-                    Dane kontaktowe: {adoptionDetails.clientContact}
+                    Dane kontaktowe: {adoptionDetails?.clientContact}
                   </label>
                 </div>
               </div>
@@ -104,7 +147,7 @@ const AdoptionDetailsPage:  NextPage<Props> = (props) => {
                 <p className="text-2xl font-medium mt-1 mb-1">Wybrane zwierzę</p>
                 <div>
                   <label className="block text-xl font-soft text-gray-700">
-                    Imię: {adoptionDetails.animalName}
+                    Imię: {adoptionDetails?.animalName}
                   </label>
                 </div>
               </div>
@@ -113,7 +156,7 @@ const AdoptionDetailsPage:  NextPage<Props> = (props) => {
                 <p className="text-2xl font-medium mt-1 mb-1">Data rozpoczęcia</p>
                 <div>
                   <label className="block text-xl font-soft text-gray-700">
-                    {adoptionDetails.createdAt}
+                    {adoptionDetails?.createdAt}
                   </label>
                 </div>
               </div>
@@ -122,7 +165,7 @@ const AdoptionDetailsPage:  NextPage<Props> = (props) => {
                 <p className="text-2xl font-medium mt-1 mb-1">Osoba przypisana</p>
                 <div>
                   <label className="block text-xl font-soft text-gray-700">
-                    {(adoptionDetails.assignedWorker && adoptionDetails.assignedWorker.id && true) ? adoptionDetails.assignedWorker?.firstName + ' ' + adoptionDetails.assignedWorker?.lastName : 'Brak przypisanego pracownika'}
+                    {(adoptionDetails?.assignedWorker && adoptionDetails?.assignedWorker?.id && true) ? adoptionDetails?.assignedWorker?.firstName + ' ' + adoptionDetails?.assignedWorker?.lastName : 'Brak przypisanego pracownika'}
                   </label>
                 </div>
               </div>
@@ -165,7 +208,7 @@ const AdoptionDetailsPage:  NextPage<Props> = (props) => {
 
             <div className="ml-6 bg-slate-200 rounded-lg pl-4 pr-8 py-4 mt-2">
 
-              <form // onSubmit={infoChangeHandler}
+              <form
                   className="flex flex-col w-full md:h-[25%] xl:h-[35%]">
                 {adoptionDetails && CurrentStepForm(formStep)}
 

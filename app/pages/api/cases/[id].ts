@@ -1,5 +1,9 @@
 import { PrismaClient } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
+import {Simulate} from "react-dom/test-utils";
+import error = Simulate.error;
+import {getServerSession} from "next-auth";
+import {authOptions} from "@/pages/api/auth/[...nextauth]";
 
 type Stage = {
 
@@ -26,30 +30,33 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse<ResponseData>
 ) {
-  const { method } = req;
-  const { id } = req.query;
+  const { method, query } = req;
   const prisma = new PrismaClient();
+  const session = await getServerSession(req, res, authOptions);
 
   switch (method) {
     case "GET":
       try {
-        const adoption = await prisma.adoption.findFirst({
-          where: {
-            id: 1
-          },
-          select: {
-            id: true,
-            animalName: true,
-            clientName: true,
-            clientSurname: true,
-            clientContact: true,
-            stages: true,
-            assignedWorker: true,
-            isFinished: true,
-            createdAt: true
-          }
-        })
-        return res.status(200).json({data: adoption as unknown as Adoption});
+        if (!query.id) {
+          return res.status(400).json({ error: error.message });
+        }
+          const adoption = await prisma.adoption.findFirst({
+            where: {
+              id: parseInt(<string>query.id || '')
+            },
+            select: {
+              id: true,
+              animalName: true,
+              clientName: true,
+              clientSurname: true,
+              clientContact: true,
+              stages: true,
+              assignedWorker: true,
+              isFinished: true,
+              createdAt: true
+            }
+          })
+          return res.status(200).json({data: adoption as unknown as Adoption});
       } catch (error: any) {
         return res.status(400).json({ error: error.message });
       } finally {
@@ -69,28 +76,104 @@ export default async function handler(
         thirdStepComment,
         fourthStepDate,
         fourthStepFinish,
-        fourthStepComment
+        fourthStepComment,
+        firstStageId,
+        secondStageId,
+        thirdStageId,
+        fourthStageId,
+        id
       } = req.body;
 
-      // tutaj save prisma
+      await prisma.adoption.update({
+        where : {
+          id: id,
+          shelterId: session?.user?.id,
+        },
+        data: {
+          stages: {
+            update:
+                {
+                  where: {
+                    id: firstStageId,
+                  },
+                  data: {
+                    description: firstStepComment,
+                    dateFinished: firstStepDate,
+                    isFinished: firstStepFinish
+                  }
+                }
+          }
+        }
+      });
 
+      await prisma.adoption.update({
+        where : {
+          id: id,
+          shelterId: session?.user?.id,
+        },
+        data: {
+          stages: {
+            update: {
+              where: {
+                id: secondStageId,
+              },
+              data: {
+                description: secondStepComment,
+                dateFinished: secondStepDate,
+                isFinished: secondStepFinish
+              }
+            }
+          }
+        }
+      });
 
-      res.status(200);
-      break;
-    case "POST":
-      // TUTAJ trzeba utworzyc sprawe na bazie
-      //   prisma.adoption.create({
-      //     data: {
-      //
-      //     }
-      //       }
-      //
-      //   )
-      res.status(200);
+      await prisma.adoption.update({
+        where : {
+          id: id,
+          shelterId: session?.user?.id,
+        },
+        data: {
+          stages: {
+            update: {
+              where: {
+                id: thirdStageId,
+              },
+              data: {
+                description: thirdStepComment,
+                dateFinished: thirdStepDate,
+                isFinished: thirdStepFinish
+              }
+            }
+          }
+        }
+      });
+      await prisma.adoption.update({
+        where : {
+          id: id,
+          shelterId: session?.user?.id,
+        },
+        data: {
+          stages: {
+            update: {
+              where: {
+                id: fourthStageId,
+              },
+              data: {
+                description: fourthStepComment,
+                dateFinished: fourthStepDate,
+                isFinished: fourthStepFinish
+              }
+            }
+
+          }
+        }
+      });
+
+      return res.status(200).end('ok');
       break;
     default:
       res.setHeader("Allow", ["GET", "POST", "PUT"]);
-      res.status(405).end(`Method ${method} Not Allowed`);
+      return res.status(405).end(`Method ${method} Not Allowed`);
       break;
   }
 

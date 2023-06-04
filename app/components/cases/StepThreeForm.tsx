@@ -30,6 +30,7 @@ const StepOneForm: React.FC<StepThreeFormProps> = (props) => {
           <label htmlFor="stepThreeFinish" className="text-lg font-semibold mb-1"> Czy chcesz zakończyć etap?</label>
           <input
               value={props.thirdStepFinish}
+              checked={props.thirdStepFinish as boolean}
               onChange={props.onInputFinished}
               type="checkbox"
               id="stepThreeFinish"

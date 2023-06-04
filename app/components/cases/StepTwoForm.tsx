@@ -30,6 +30,7 @@ const StepOneForm: React.FC<StepTwoFormProps> = (props) => {
           <input
               value={props.secondStepFinish}
               onChange={props.onInputFinished}
+              checked={props.secondStepFinish as boolean}
               type="checkbox"
               id="stepTwoFinish"
               placeholder=""

@@ -1,19 +1,7 @@
 import {NextPage} from "next";
 import {useEffect, useState} from "react";
-import styles from './Casses.module.css';
 import Page from "../../components/page/Page";
 import WorkerButton from "../../components/shelter/workers/WorkerButton";
-
-export type AppUser = {
-  id: number;
-  name: string;
-  email: string;
-  password: string;
-  address: string;
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
-}
 
 export type CaseInfo = {
   id: number;
@@ -34,7 +22,8 @@ type CaseBuilder = {
 type Props = {};
 const ShelterCasesPage:  NextPage<Props> = (props) => {
   const [casesArray, setCasesArray] = useState<CaseInfo[]>([]);
-  const [filtredCasesArray, SetFiltredCasesArray] = useState<CaseInfo[]>([]);
+  const [filtredCasesArray, setFiltredCasesArray] = useState<CaseInfo[]>([]);
+  const [workers, setWorkers] = useState<>([]);
 
   useEffect(() => {
     async function getData() {
@@ -46,34 +35,45 @@ const ShelterCasesPage:  NextPage<Props> = (props) => {
       })
       let data = await response.json();
       setCasesArray(data.data)
-      SetFiltredCasesArray(data.data)
+      setFiltredCasesArray(data.data)
+      const tempWorkers = [];
+      casesArray.forEach((item) => {
+        const assignedWorker = item.assignedWorker;
+        if (assignedWorker) {
+          const isUnique = tempWorkers.filter(worker => worker.id === assignedWorker.id)?.length === 0;
+          if (isUnique) {
+            tempWorkers.push(assignedWorker);
+          }
+        }
+      });
+      setWorkers(tempWorkers);
+
     }
     getData()
   }, [])
 
-  function EmployeeListItem(props: {employee: CaseInfo}) {
-    const employee = props.employee
+  function CasesListItem(props: {adoptionCase: CaseInfo}) {
+    const adoption = props.adoptionCase;
     return(
-        <tr>
+        <tr key={adoption.id}>
           <td className="whitespace-nowrap px-4 py-2 text-gray-700 text-center">
-            {employee.id}
+            {adoption.id}
           </td>
           <td className="whitespace-nowrap px-4 py-2 text-gray-700 text-center">
-            {employee.createdAt.toString().substring(0, 10)}
+            {adoption.createdAt.toString().substring(0, 10)}
           </td>
-          <td className="whitespace-nowrap px-4 py-2 text-gray-700 text-center">{employee.clientName}</td>
-          <td className="whitespace-nowrap px-4 py-2 text-gray-700 text-center">{employee.assignedWorker.email}</td>
+          <td className="whitespace-nowrap px-4 py-2 text-gray-700 text-center">{adoption.clientName}</td>
+          <td className="whitespace-nowrap px-4 py-2 text-gray-700 text-center">{adoption.assignedWorker.email}</td>
           <td className="whitespace-nowrap px-4 py-2">
             <div className="inline-flex rounded-lg  p-1">
 
               <a
-                  href={`/cases/${employee.id}`}
+                  href={`/cases/${adoption.id}`}
                   className="inline-block rounded bg-[#F4694D] px-4 py-2 text-xs font-medium text-black hover:bg-indigo-700"
               >
                 Podgląd
               </a>
             </div>
-
           </td>
         </tr>
     )
@@ -81,37 +81,36 @@ const ShelterCasesPage:  NextPage<Props> = (props) => {
 
   const getFilteredMessages = (worker_id : string) => {
     if(worker_id == "all"){
-      SetFiltredCasesArray(casesArray)
+      setFiltredCasesArray(casesArray)
     } else{
-      SetFiltredCasesArray(casesArray.filter(case_ => case_.assignedWorker.id == Number(worker_id)))
+      setFiltredCasesArray(casesArray.filter(case_ => case_.assignedWorker.id == Number(worker_id)))
     }
   }
 
   const handleWorkerSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log(e.target.value)
     getFilteredMessages(e.target.value)
   }
 
   // @ts-ignore
   return (<> <Page children={
-        <div className="w-min">
+        <div className="mr-2">
           <p className="text-4xl font-medium ml-4 mb-10 mt-8">Sprawy adopcyjne</p>
-          <div className={styles.filters}>
-              <span className={styles.spacer}></span>
-              <select onChange={handleWorkerSelect} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+          <div className="mr-[25%] flex align-end justify-end">
+              <select onChange={handleWorkerSelect} className="w-72 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 <option key="all" value="all">Nieprzypisano</option>
-                {
-                  [...new Map(casesArray.map(item =>
-                    [item["assignedWorker"]['id'], item])).values()].map(case_ => 
-                    <option key={case_.assignedWorker.id} value={case_.assignedWorker.id}>{case_.assignedWorker.firstName} {case_.assignedWorker.lastName}</option>
-                  )
-                }
+                {workers && workers.map(item => {
+                    return (
+                        <option key={item.id} value={item.id}>
+                          {`${item.firstName} ${item.lastName}`}
+                        </option>
+                    );
+                })}
               </select>
           </div>
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
+          <div className="overflow-x-auto mt-2 mr-4 mb-2">
+            <table className="w-9/12 divide-y-2 divide-gray-200 bg-white text-sm">
               <thead className="ltr:text-left rtl:text-right">
-              <tr>
+              <tr key={123123123}>
                 {[ "Numer sprawy", "Data utworzenia", "Adoptujący", "Pracownik"].map((h) => {
                       return(
                           <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
@@ -125,14 +124,15 @@ const ShelterCasesPage:  NextPage<Props> = (props) => {
               </thead>
 
               <tbody className="divide-y divide-gray-200">
-              {filtredCasesArray && filtredCasesArray.map((e: CaseInfo) =>
-                  <EmployeeListItem key={e.id} employee={e}/>
+              {filtredCasesArray && filtredCasesArray.map((c: CaseInfo) =>
+                  <CasesListItem  key={c.id} adoptionCase={c}/>
               )}
               </tbody>
             </table>
           </div>
-          <div className="flex flex-row-reverse mr-4 mt-4">
-            <WorkerButton onClick={() => {}}>
+          <div className="flex flex-row-reverse mr-[25%] mt-6 ">
+            <WorkerButton onClick={() => {addNewCase({
+              animalId: 1, animalName: 'Kazik', clientName: 'Ola', clientSurname: 'Jaworska', clientContact: 'ola@j.pl'})}}>
               Dodaj sprawę
               <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -155,7 +155,7 @@ const ShelterCasesPage:  NextPage<Props> = (props) => {
 }
 
 
-async function addNewCase(caseInfo: { firstName: string; lastName: string; password: string; phoneNumber: string; email: string }) {
+async function addNewCase(caseInfo: { clientName: string; clientContact: string; clientSurname: string; animalName: string; animalId: number }) {
   const response = await fetch("/api/cases", {
     method: "POST",
     headers: {
@@ -163,7 +163,8 @@ async function addNewCase(caseInfo: { firstName: string; lastName: string; passw
     },
     body: JSON.stringify(caseInfo),
   });
-
+  if (response.ok) {
+  }
   if (!response.ok) alert(await response.text());
 }
 export default ShelterCasesPage;
