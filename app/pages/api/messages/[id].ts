@@ -3,7 +3,8 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 type WorkerInfo = {
   firstName: string,
-  lastName: string
+  lastName: string,
+  email: string,
 }
 
 type Message = {
@@ -13,6 +14,7 @@ type Message = {
   candidateFirstName: string,
   candidateLastName: string,
   candidateContactInfo: string,
+  isFinished: boolean,
   worker: WorkerInfo | null,
   message: string
 }
@@ -51,10 +53,12 @@ export default async function handler(
         candidateContactInfo: true,
         worker: {
           select:{
+            email: true,
             firstName : true,
             lastName : true
           }
         },
+        isFinished: true,
         workerId: false,
         message: true
       }
