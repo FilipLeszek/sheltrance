@@ -11,6 +11,7 @@ type Message = {
     candidateLastName: string
     candidateContactInfo: String
     message: string
+    shelterId: number
 }
 
 type ResponseData = {
@@ -29,8 +30,7 @@ export default async function handler(
     return res.status(405).json({ error: "Bad method." });
   }
 
-  const {petId, petName, candidateFirstName, candidateLastName, candidateContactInfo, message} = await parseDataFromReq(req);
-  const session = await getServerSession(req, res, authOptions)
+  const {petId, petName, candidateFirstName, candidateLastName, candidateContactInfo, message, shelterId} = await parseDataFromReq(req);
 
   const prisma = new PrismaClient();
 
@@ -43,6 +43,11 @@ export default async function handler(
         candidateLastName: candidateLastName,
         candidateContactInfo: candidateContactInfo,
         message: message,
+        shelter: {
+            connect: {
+                id: shelterId
+            }
+        }
       },
     });
   } catch (error: any) {

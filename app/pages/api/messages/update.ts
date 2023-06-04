@@ -1,6 +1,8 @@
 import { parseDataFromReq } from "@/lib/api-utils";
 import { PrismaClient } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]";
 
 type MessageInfo = {
   isFinished?: boolean,
@@ -29,6 +31,8 @@ export default async function handler(
   
   const { id, isFinished, workerEmail } = await parseDataFromReq(req);
   const prisma = new PrismaClient();
+  const session = await getServerSession(req, res, authOptions);
+
   let data = {} as MessageInfo;
   if(isFinished != null){
     data.isFinished = isFinished;
@@ -40,15 +44,17 @@ export default async function handler(
         }
     }
   }
-
-  try {
-    const message = await prisma.message.update({
-      where: {
-        id: id
-      },
-      data: data
-    })
-    return res.status(200).json({data: "OK"});
+  try { if(session?.user?.shelterId){
+        const message = await prisma.message.update({
+            where: {
+                id: id
+            },
+            data: data
+        })
+        return res.status(200).json({data: "OK"});
+    } else {
+        return res.status(401).json({ error: "Unauthorized" });
+    }
   } catch (error: any) {
     return res.status(400).json({ error: error.message });
   } finally {
