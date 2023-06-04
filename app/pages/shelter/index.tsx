@@ -51,7 +51,7 @@ export default function ShelterDetailsPage() {
 
   useEffect(() => {
     async function getData() {
-      const response = await fetch("/api/shelterInfo", {
+      const response = await fetch("/api/shelter", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -133,7 +133,7 @@ export default function ShelterDetailsPage() {
 }
 
 async function changeShelterData(shelterData: ShelterData) {
-  const response = await fetch("/api/updateShelter", {
+  const response = await fetch("/api/shelter/update", {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",

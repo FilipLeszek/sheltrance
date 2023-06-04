@@ -35,6 +35,10 @@ export default async function handler(
   const prisma = new PrismaClient();
   const session = await getServerSession(req, res, authOptions);
 
+  if(!session){
+    return res.status(401).json({error: "Unauthorized"});
+  }
+
   switch (method) {
     case "GET":
       try {

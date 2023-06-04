@@ -311,7 +311,7 @@ const ShelterEmployeesPage:  NextPage<Props> = (props) => {
 }
 
 async function addNewEmployee(employeeInfo: { firstName: string; lastName: string; password: string; phoneNumber: string; email: string }) {
-  const response = await fetch("/api/createEmployee", {
+  const response = await fetch("/api/employees/add", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -323,7 +323,7 @@ async function addNewEmployee(employeeInfo: { firstName: string; lastName: strin
 }
 
 async function deleteEmployee(id: number) {
-  const response = await fetch("/api/deleteEmployee", {
+  const response = await fetch("/api/employees/delete", {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",

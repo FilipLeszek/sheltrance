@@ -148,7 +148,7 @@ export default function MessagePage() {
 }
 
 async function changeEmployeeInfo(employeeInfo: EmployeeInfo) {
-  const response = await fetch("/api/updateEmployee", {
+  const response = await fetch("/api/employees/update", {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
