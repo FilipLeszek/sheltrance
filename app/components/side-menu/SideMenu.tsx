@@ -2,6 +2,7 @@ import Link from "next/link";
 import {useRouter} from "next/router";
 import {signOut, useSession} from "next-auth/react";
 import styles from './SideMenu.module.css';
+import { ReactNode } from "react";
 
 
 type Props = {
@@ -13,7 +14,24 @@ const logoutHandler = () => {
 
 export const SideMenu: React.FC<Props> = ({ }) => {
   const router = useRouter();
-  const { data: session } = useSession()
+  const { data: session } = useSession();
+
+  function Details(props: {path: string, children: ReactNode}) {
+    if(router.pathname.startsWith(props.path)){
+      return (
+        <details className="group [&_summary::-webkit-details-marker]:hidden" open>
+          {props.children}
+        </details>
+      )
+    } else {
+      return (
+        <details className="group [&_summary::-webkit-details-marker]:hidden">
+          {props.children}
+        </details>
+      )
+    }
+    
+  }
 
   // @ts-ignore
   return <>
@@ -54,7 +72,7 @@ export const SideMenu: React.FC<Props> = ({ }) => {
 
           {
             session?.user?.role === "manager" &&
-              <details className="group [&_summary::-webkit-details-marker]:hidden">
+              <Details path="/shelter">
                 <summary
                     className={`flex items-center justify-between rounded-lg px-4 py-2 ${styles.menuElement}`}
                 >
@@ -104,13 +122,13 @@ export const SideMenu: React.FC<Props> = ({ }) => {
                   </Link>
 
                 </nav>
-              </details>
+              </Details>
           }
 
 
 
 
-          <details className="group [&_summary::-webkit-details-marker]:hidden">
+          <Details path="/settings">
             <summary
                 className={`flex items-center justify-between rounded-lg px-4 py-2 ${styles.menuElement}`}
             >
@@ -195,7 +213,7 @@ export const SideMenu: React.FC<Props> = ({ }) => {
                 </button>
               </div>
             </nav>
-          </details>
+          </Details>
         </nav>
       </div>
 

@@ -180,7 +180,7 @@ const ShelterEmployeesPage:  NextPage<Props> = (props) => {
         <td className="whitespace-nowrap px-4 py-2 text-gray-700 text-center">{employee.phoneNumber}</td>
         <td className="whitespace-nowrap px-4 py-2">
         <div className="inline-flex rounded-lg border border-gray-100 bg-gray-100 p-1">
-              <Link href={`workers/edit/${employee.id}`} className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm text-gray-500 hover:text-gray-700 focus:relative">
+              <Link href={`workers/${employee.id}`} className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm text-gray-500 hover:text-gray-700 focus:relative">
                 <svg 
                   xmlns="http://www.w3.org/2000/svg" 
                   fill="none" 
