@@ -1,15 +1,5 @@
-import { parseDataFromReq } from "@/lib/api-utils";
 import { PrismaClient } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
-
-// type Messages = {
-//     id: number,
-//     date: string,
-//     candidate: string,
-//     worker: string
-// }
-
-
 
 type WorkerInfo = {
   firstName: String,
