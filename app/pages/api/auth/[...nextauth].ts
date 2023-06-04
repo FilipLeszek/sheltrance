@@ -1,14 +1,15 @@
 import { PrismaClient } from "@prisma/client";
-import NextAuth, {NextAuthOptions} from "next-auth";
+import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { comparePasswords } from "@/lib/passwd-utils";
 
 export const authOptions: NextAuthOptions = {
   secret: "halo",
-      session: {
-  strategy: "jwt",
+  session: {
+    strategy: "jwt",
   },
   pages: {
-    signIn: "/login"
+    signIn: "/login",
   },
   providers: [
     CredentialsProvider({
@@ -19,37 +20,50 @@ export const authOptions: NextAuthOptions = {
       },
       // @ts-ignore
       authorize: async (credentials, _req) => {
+        if (!credentials) throw Error("Credentials are undefined.");
+
         const prisma = new PrismaClient();
-        const user = await prisma.appUser.findFirst({
+        const foundUser = await prisma.appUser.findFirst({
           where: {
-            email: credentials?.email
+            email: credentials.email,
           },
         });
-        if (user?.password === credentials?.password) {
-          return { email: user?.email, role: user?.role, shelterId: user?.shelterId }; // Return the user object
+        if (!foundUser) throw Error("User with given email not found.");
+
+        const isSamePass = comparePasswords(
+          credentials.password,
+          foundUser.password
+        );
+
+        if (isSamePass) {
+          return {
+            email: foundUser.email,
+            role: foundUser.role,
+            shelterId: foundUser.shelterId,
+          }; // Return the user object
         }
         return null;
       },
     }),
   ],
   callbacks: {
-  async jwt({ token, user }) {
-    /* Step 1: update the token based on the user object */
-    if (user) {
-      token.role = user.role;
-      token.shelterId = user.shelterId;
-    }
-    return token;
+    async jwt({ token, user }) {
+      /* Step 1: update the token based on the user object */
+      if (user) {
+        token.role = user.role;
+        token.shelterId = user.shelterId;
+      }
+      return token;
+    },
+    session({ session, token }) {
+      /* Step 2: update the session.user based on the token object */
+      if (token && session.user) {
+        session.user.role = token.role;
+        session.user.shelterId = token.shelterId;
+      }
+      return session;
+    },
   },
-  session({ session, token }) {
-    /* Step 2: update the session.user based on the token object */
-    if (token && session.user) {
-      session.user.role = token.role;
-      session.user.shelterId = token.shelterId;
-    }
-    return session;
-  },
-}
-}
+};
 
-export default NextAuth(authOptions)
+export default NextAuth(authOptions);

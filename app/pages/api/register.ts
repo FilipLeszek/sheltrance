@@ -1,4 +1,5 @@
 import { parseDataFromReq } from "@/lib/api-utils";
+import { hashPassword } from "@/lib/passwd-utils";
 import { PrismaClient } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
 
@@ -18,7 +19,10 @@ export default async function handler(
     return res.status(405).json({ error: "Bad method." });
   }
 
-  const { email, password, name, address, firstName, lastName, phoneNumber  } = await parseDataFromReq(req);
+  const { email, password, name, address, firstName, lastName, phoneNumber } =
+    await parseDataFromReq(req);
+
+  const hashedPassword = await hashPassword(password);
 
   const prisma = new PrismaClient();
 
@@ -27,17 +31,17 @@ export default async function handler(
       data: {
         address: address,
         name: name,
-      }
-    })
+      },
+    });
     const user = await prisma.appUser.create({
       data: {
         email: email,
-        password: password,
+        password: hashedPassword,
         firstName: firstName,
         lastName: lastName,
         phoneNumber: phoneNumber,
         role: "manager",
-        shelterId: shelter.id
+        shelterId: shelter.id,
       },
     });
   } catch (error: any) {
