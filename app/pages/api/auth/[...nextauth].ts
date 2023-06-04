@@ -1,7 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import bcrypt from "bcrypt";
 import { comparePasswords } from "@/lib/passwd-utils";
 
 export const authOptions: NextAuthOptions = {
@@ -26,20 +25,21 @@ export const authOptions: NextAuthOptions = {
         const prisma = new PrismaClient();
         const foundUser = await prisma.appUser.findFirst({
           where: {
-            email: credentials?.email,
+            email: credentials.email,
           },
         });
-        if (!foundUser) return null;
+        if (!foundUser) throw Error("User with given email not found.");
 
-        const isSamePass = await comparePasswords(
-          foundUser.password,
-          credentials?.password
+        const isSamePass = comparePasswords(
+          credentials.password,
+          foundUser.password
         );
+
         if (isSamePass) {
           return {
-            email: foundUser?.email,
-            role: foundUser?.role,
-            shelterId: foundUser?.shelterId,
+            email: foundUser.email,
+            role: foundUser.role,
+            shelterId: foundUser.shelterId,
           }; // Return the user object
         }
         return null;

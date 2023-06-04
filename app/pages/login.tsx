@@ -22,12 +22,12 @@ const Login: NextPage<Props> = (props) => {
   const loginHandler = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const username = emailRef.current?.value;
+    const email = emailRef.current?.value;
     const password = passwordRef.current?.value;
 
     const result = await signIn("credentials", {
       redirect: false,
-      email: username,
+      email: email,
       password: password,
     });
 

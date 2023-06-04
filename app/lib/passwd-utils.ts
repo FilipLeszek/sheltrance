@@ -1,10 +1,10 @@
-import bcrypt from "bcrypt";
+import * as bcrypt from "bcrypt";
 
-export async function hashPassword(unHashPass: string) {
-  return bcrypt.hash(unHashPass, 10).then((result) => result);
+export function hashPassword(unHashPass: string) {
+  const salt = bcrypt.genSaltSync(10);
+  return bcrypt.hashSync(unHashPass, salt);
 }
 
-export async function comparePasswords(unHashPass: string, hashPass: string) {
-  const result = await bcrypt.compare(unHashPass, hashPass);
-  return result;
+export function comparePasswords(unHashPass: string, hashPass: string) {
+  return bcrypt.compareSync(unHashPass, hashPass);
 }
