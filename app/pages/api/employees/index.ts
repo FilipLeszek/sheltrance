@@ -31,20 +31,23 @@ export default async function handler(
   const prisma = new PrismaClient();
 
   try {
-
-    const employees = await prisma.appUser.findMany({
-      where: {
-        shelterId: session?.user?.shelterId
-      },
-      select: {
-        id: true,
-        firstName: true,
-        lastName: true,
-        email: true,
-        phoneNumber: true,
-      }
-    });
-    return res.status(200).json({data: employees});
+    if (session?.user?.shelterId) {
+      const employees = await prisma.appUser.findMany({
+        where: {
+          shelterId: session?.user?.shelterId
+        },
+        select: {
+          id: true,
+          firstName: true,
+          lastName: true,
+          email: true,
+          phoneNumber: true,
+        }
+      });
+      return res.status(200).json({data: employees});
+    } else {
+      res.status(401).json({ error: 'Unauthorized' });
+    }
   } catch (error: any) {
     return res.status(400).json({ error: error.message });
   } finally {
