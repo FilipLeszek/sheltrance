@@ -121,7 +121,7 @@ export default function MessagesPage() {
                               <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                                   #{message.id}
                                 </td>
-                                <td className="whitespace-nowrap px-4 py-2 text-gray-700">{message.date.toString().substring(0, 10)}</td>
+                                <td className="whitespace-nowrap px-4 py-2 text-gray-700">{message.date?.toString().substring(0, 10)}</td>
                                 <td className="whitespace-nowrap px-4 py-2 text-gray-700">{message.candidateContactInfo}</td>
                                 <td className="whitespace-nowrap px-4 py-2 text-gray-700">{message.worker?.firstName} {message.worker?.lastName}</td>
                                 <td className="whitespace-nowrap px-4 py-2">
