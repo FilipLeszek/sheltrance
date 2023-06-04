@@ -35,7 +35,8 @@ export default async function handler(
     if (session?.user?.shelterId) {
         const appUser = await prisma.appUser.findFirst({
             where: {
-                id: Number(id)
+                id: Number(id),
+                shelterId: session.user.shelterId 
             },
             select: {
                 firstName: true,

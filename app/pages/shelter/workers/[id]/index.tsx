@@ -1,7 +1,7 @@
 import {useRouter} from "next/router";
 import Page from "@/components/page/Page";
 import { useEffect, useState } from "react";
-import Button from "@/components/Button";
+import WorkerButton from "@/components/shelter/workers/WorkerButton";
 
 type EmployeeInfo = {
   id: number;
@@ -53,10 +53,10 @@ export default function MessagePage() {
       setValue = setEmployeeEmail;
     } else if (target.id == "employeePhoneNumber") {
       setValue = setEmployeePhoneNumber;
-    } 
+    }
     setValue(target.value);
   }
-  
+
   useEffect(() => {
     async function getData() {
       if(!id) {
@@ -69,7 +69,6 @@ export default function MessagePage() {
         }
       })
       let data = await response.json();
-      // alert(`data: ${data.error}`);
       setEmployeeFirstName(data.data.firstName);
       setEmployeeLastName(data.data.lastName);
       setEmployeeEmail(data.data.email);
@@ -136,7 +135,10 @@ export default function MessagePage() {
                     onChange={handleInputChange}
                   />
                 </div>
-                <Button type="submit">Zapisz zmiany</Button>
+                <div className="sm:flex">
+                  <WorkerButton type="submit" >Zapisz zmiany</WorkerButton>
+                  <WorkerButton type="button" mr="ml-6" onClick={() => router.push("/shelter/workers")}>Powrót</WorkerButton>
+                </div>
               </form>
             </div>
           </div>
