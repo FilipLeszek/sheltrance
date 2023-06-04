@@ -3,12 +3,11 @@ import {NextPage} from "next";
 import {useEffect, useState} from "react";
 import {Adoption} from "../../api/cases/[id]";
 import Page from "@/components/page/Page";
-import Button from "@/components/Button";
-import localFont from "@next/font/local";
 import StepOneForm from "@/components/cases/StepOneForm";
 import StepTwoForm from "@/components/cases/StepTwoForm";
 import StepThreeForm from "@/components/cases/StepThreeForm";
 import StepFourForm from "@/components/cases/StepFourForm";
+import Button from "@/components/Button";
 
 type Props = {};
 
@@ -19,8 +18,23 @@ const AdoptionDetailsPage:  NextPage<Props> = (props) => {
 
   const [adoptionDetails, setAdoptionDetails] = useState({} as unknown as Adoption);
   const [formStep, setFormStep] = useState(1);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+
+
+  const [firstStepDate, setFirstStepDate] = useState("");
+  const [firstStepFinish, setFirstStepFinish] = useState("");
+  const [firstStepComment, setFirstStepComment] = useState("");
+
+  const [secondStepDate, setSecondStepDate] = useState("");
+  const [secondStepFinish, setSecondStepFinish] = useState("");
+  const [secondStepComment, setSecondStepComment] = useState("");
+
+  const [thirdStepDate, setThirdStepDate] = useState("");
+  const [thirdStepFinish, setThirdStepFinish] = useState("");
+  const [thirdStepComment, setThirdStepComment] = useState("");
+
+  const [fourthStepDate, setFourthStepDate] = useState("");
+  const [fourthStepFinish, setFourthStepFinish] = useState("");
+  const [fourthStepComment, setFourthStepComment] = useState("");
 
   useEffect(() => {
     async function getData() {
@@ -37,24 +51,29 @@ const AdoptionDetailsPage:  NextPage<Props> = (props) => {
   }, [id])
 
 
-  const changeStep = (data) => {
+  const changeStep = (data: any) => {
     setFormStep(data)
   }
   
   function CurrentStepForm(num: number) {
     switch(num) {
       case 1:
-        return <StepOneForm/>;
+        return <StepOneForm firstStepComment={firstStepComment} firstStepDate={firstStepDate} firstStepFinish={firstStepFinish} onInputDate={(e) => setFirstStepDate(e.target.value)} onInputComment={(e) => setFirstStepComment(e.target.value)} onInputFinished={(e) => setFirstStepFinish(e.target.value)}/>;
       case 2:
-        return <StepTwoForm/>;
+        return <StepTwoForm secondStepComment={secondStepComment} secondStepDate={secondStepDate} secondStepFinish={secondStepFinish} onInputDate={(e) => setSecondStepDate(e.target.value)} onInputComment={(e) => setSecondStepComment(e.target.value)} onInputFinished={(e) => setSecondStepFinish(e.target.value)}/>;
       case 3:
-        return <StepThreeForm/>;
+        return <StepThreeForm thirdStepComment={thirdStepComment} thirdStepDate={thirdStepDate} thirdStepFinish={thirdStepFinish} onInputDate={(e) => setThirdStepDate(e.target.value)} onInputComment={(e) => setThirdStepComment(e.target.value)} onInputFinished={(e) => setThirdStepFinish(e.target.value)}/>;
       case 4: 
-        return <StepFourForm/>;
+        return <StepFourForm fourthStepComment={fourthStepComment} fourthStepDate={fourthStepDate} fourthStepFinish={fourthStepFinish} onInputDate={(e) => setFourthStepDate(e.target.value)} onInputComment={(e) => setFourthStepComment(e.target.value)} onInputFinished={(e) => setFourthStepFinish(e.target.value)}/>;
       default:
-        return <StepOneForm/>;
+        return <StepOneForm firstStepComment={firstStepComment} firstStepDate={firstStepDate} firstStepFinish={firstStepFinish} onInputDate={(e) => setFirstStepDate(e.target.value)} onInputComment={(e) => setFirstStepComment(e.target.value)} onInputFinished={(e) => setFirstStepFinish(e.target.value)}/>;
     }
   }
+
+  const saveChanges = () => {
+    console.log(firstStepComment)
+  }
+
   return (
       <>
         {/*@ts-ignore*/}
@@ -103,7 +122,7 @@ const AdoptionDetailsPage:  NextPage<Props> = (props) => {
                 <p className="text-2xl font-medium mt-1 mb-1">Osoba przypisana</p>
                 <div>
                   <label className="block text-xl font-soft text-gray-700">
-                    {adoptionDetails.assignedWorker?.id !== null ? adoptionDetails.assignedWorker?.firstName + ' ' + adoptionDetails.assignedWorker?.lastName : 'Brak przypisanego pracownika'}
+                    {(adoptionDetails.assignedWorker && adoptionDetails.assignedWorker.id && true) ? adoptionDetails.assignedWorker?.firstName + ' ' + adoptionDetails.assignedWorker?.lastName : 'Brak przypisanego pracownika'}
                   </label>
                 </div>
               </div>
@@ -148,10 +167,13 @@ const AdoptionDetailsPage:  NextPage<Props> = (props) => {
 
               <form // onSubmit={infoChangeHandler}
                   className="flex flex-col w-full md:h-[25%] xl:h-[35%]">
-                {CurrentStepForm(formStep)}
+                {adoptionDetails && CurrentStepForm(formStep)}
 
               </form>
             </div>
+            <footer className="flex align-end justify-end mt-2">
+              <Button onClick={() => saveChanges()} type="submit" >Zapisz zmiany</Button>
+            </footer>
 
           </div>
         }/>

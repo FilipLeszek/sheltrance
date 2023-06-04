@@ -2,11 +2,6 @@ import Button from "@/components/Button";
 import Page from "@/components/page/Page";
 import { useEffect, useState } from "react";
 
-// 1 dodaj dane podstawowe
-// 2 dodaj sam stepper
-// 3 zrobic zeby stepper wyswietlal dane
-// 4 ogarnac zapis po zmianie
-
 type ShelterInfo = {
   name: string;
   address: string;

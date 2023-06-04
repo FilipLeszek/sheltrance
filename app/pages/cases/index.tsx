@@ -1,16 +1,25 @@
 import {NextPage} from "next";
 import {useEffect, useState} from "react";
-import Link from "next/link";
 import styles from './Casses.module.css';
 import Page from "../../components/page/Page";
 import WorkerButton from "../../components/shelter/workers/WorkerButton";
 
+export type AppUser = {
+  id: number;
+  name: string;
+  email: string;
+  password: string;
+  address: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+}
 
 export type CaseInfo = {
   id: number;
   createdAt: any;
   clientName: string;
-  assignedWorker:any;
+  assignedWorker: any;
   isFinished: boolean;
 };
 

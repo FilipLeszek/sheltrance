@@ -1,4 +1,4 @@
-import { Ref } from "react";
+import React, { Ref } from "react";
 
 const Input: React.FC<{
   placeholder: string;
