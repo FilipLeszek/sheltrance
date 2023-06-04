@@ -1,10 +1,47 @@
 import {useRouter} from "next/router";
+import {useEffect, useState} from "react";
+
 import Page from "@/components/page/Page";
+
+type WorkerInfo = {
+  firstName: string,
+  lastName: string
+}
+
+type Message = {
+  id: number,
+  date: Date,
+  petName: string,
+  candidateFirstName: string,
+  candidateLastName: string,
+  candidateContactInfo: string,
+  worker: WorkerInfo | null,
+  message: string
+}
 
 export default function MessagePage() {
 
-  const router = useRouter()
-  const id = router.query.id as string
+  const { query, isReady} = useRouter()
+  
+  const [messageDetails, setMessageDetails] = useState({} as Message);
+
+  useEffect(() => {
+    if(!isReady) return;
+
+    const id = query.id as string
+
+    async function getData() {
+      const response = await fetch(`/api/messages/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        }
+      })
+      let data = await response.json();
+      setMessageDetails(data.data)
+    }
+    getData()
+  }, [isReady])
 
   return (
       <>
@@ -23,10 +60,7 @@ export default function MessagePage() {
                     <h2 className="text-3xl font-bold sm:text-4xl">Załączona wiadomość</h2>
             
                     <p className="mt-4 text-gray-600">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut vero
-                      aliquid sint distinctio iure ipsum cupiditate? Quis, odit assumenda?
-                      Deleniti quasi inventore, libero reiciendis minima aliquid tempora.
-                      Obcaecati, autem.
+                        {messageDetails.message}
                     </p>
                   </div>
             
@@ -37,20 +71,9 @@ export default function MessagePage() {
                       <h5 className="mt-2 font-bold">Dane klienta</h5>
             
                       <p className="hidden sm:mt-1 sm:block sm:text-sm sm:text-gray-600">
-                        Lorem ipsum dolor sit amet consectetur.
+                        {messageDetails.candidateFirstName} {messageDetails.candidateLastName}
                       </p>
-                    </a>
-            
-                    <a
-                      className="block rounded-xl border border-gray-100 p-4 shadow-sm hover:border-gray-200 hover:ring-1 hover:ring-gray-200 focus:outline-none focus:ring"
-                    >
-                      <h5 className="mt-2 font-bold">Dane kontaktowe</h5>
-            
-                      <p className="hidden sm:mt-1 sm:block sm:text-sm sm:text-gray-600">
-                        Lorem ipsum dolor sit amet consectetur.
-                      </p>
-                    </a>
-            
+                    </a>  
                     <a
                       className="block rounded-xl border border-gray-100 p-4 shadow-sm hover:border-gray-200 hover:ring-1 hover:ring-gray-200 focus:outline-none focus:ring"
                     >
@@ -58,7 +81,7 @@ export default function MessagePage() {
                       <h5 className="mt-2 font-bold">Wybrane zwierzę</h5>
             
                       <p className="hidden sm:mt-1 sm:block sm:text-sm sm:text-gray-600">
-                        Lorem ipsum dolor sit amet consectetur.
+                        {messageDetails.petName}
                       </p>
                     </a>
             
@@ -69,7 +92,7 @@ export default function MessagePage() {
                       <h5 className="mt-2 font-bold">Data zgłoszenia</h5>
             
                       <p className="hidden sm:mt-1 sm:block sm:text-sm sm:text-gray-600">
-                        Lorem ipsum dolor sit amet consectetur.
+                        {messageDetails.date?.toString().substring(0,10)}
                       </p>
                     </a>
             
@@ -80,7 +103,16 @@ export default function MessagePage() {
                       <h5 className="mt-2 font-bold">Osoba przypisana</h5>
             
                       <p className="hidden sm:mt-1 sm:block sm:text-sm sm:text-gray-600">
-                        Lorem ipsum dolor sit amet consectetur.
+                        {messageDetails.worker?.firstName} {messageDetails.worker?.lastName}
+                      </p>
+                    </a>
+                    <a
+                      className="block rounded-xl border border-gray-100 p-4 shadow-sm hover:border-gray-200 hover:ring-1 hover:ring-gray-200 focus:outline-none focus:ring"
+                    >
+                      <h5 className="mt-2 font-bold">Dane kontaktowe</h5>
+            
+                      <p className="hidden sm:mt-1 sm:block sm:text-sm sm:text-gray-600">
+                        {messageDetails.candidateContactInfo}
                       </p>
                     </a>
                   </div>
