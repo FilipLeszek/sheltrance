@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import {getServerSession} from "next-auth";
 import {authOptions} from "@/pages/api/auth/[...nextauth]";
 import { parseDataFromReq } from "@/lib/api-utils";
+import { hashPassword } from "@/lib/passwd-utils";
 
 type ResponseData = {
   data?: string;
@@ -23,17 +24,23 @@ export default async function handler(
 
   const prisma = new PrismaClient();
 
-  const { id, firstName, lastName, email, phoneNumber, role } = await parseDataFromReq(req);
+  const { id, firstName, lastName, email, phoneNumber, password } = await parseDataFromReq(req);
+  let data;
+  if(password){
+    data = {password: hashPassword(password)}
+  } else {
+    data = {
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      phoneNumber: phoneNumber,
+    }
+  }
 
 
-  try {if (session?.user?.shelterId){
+  try {if (session?.user?.shelterId && session.user?.role == "manager"){
       const user = await prisma.appUser.update({
-        data: {
-          firstName: firstName,
-          lastName: lastName,
-          email: email,
-          phoneNumber: phoneNumber,
-        },
+        data: data,
         where: {
           id: id
         }

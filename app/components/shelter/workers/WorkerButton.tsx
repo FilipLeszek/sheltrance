@@ -3,6 +3,7 @@ import React, { ReactNode } from "react";
 const WorkerButton: React.FC<{
   children: ReactNode;
   color?: string;
+  class?: string;
   type?: "submit" | "button";
   mr?: string;
   onClick?: ([]: number[]) => void;
@@ -22,7 +23,7 @@ const WorkerButton: React.FC<{
     <button
       type={type}
       onClick={clickHandler}
-      className={`inline-flex items-center ${margin} gap-2 ${colorClass} rounded px-8 py-3 text-base font-medium text-black transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-${colorClass}  `}
+      className={`${props.class} inline-flex items-center ${margin} gap-2 ${colorClass} rounded px-8 py-3 text-base font-medium text-black transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-${colorClass} `}
     >
       {props.children}
     </button>
