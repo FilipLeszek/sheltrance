@@ -27,7 +27,7 @@ export default async function handler(
 
   const prisma = new PrismaClient();
 
-  try {if (session){
+  try {if (session && session.user?.role == "manager"){
     const user = await prisma.appUser.delete({
       where: {
         id: id

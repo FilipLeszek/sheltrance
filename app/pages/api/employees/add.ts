@@ -28,7 +28,7 @@ export default async function handler(
 
   const prisma = new PrismaClient();
 
-  try {if (session?.user?.shelterId){
+  try {if (session?.user?.shelterId && session.user?.role == "manager"){
     const user = await prisma.appUser.create({
       data: {
         firstName: firstName,

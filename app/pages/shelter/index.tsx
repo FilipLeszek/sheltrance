@@ -8,6 +8,8 @@ type ShelterInfo = {
   employeeCount: number;
   openCases: number;
   closedCases: number;
+  openMessages: number;
+  closedMessages: number;
 };
 
 type ShelterData = {
@@ -16,7 +18,7 @@ type ShelterData = {
 };
 
 export default function ShelterDetailsPage() {
-  const [shelter, setShelter] = useState({name: "", address: "", employeeCount: 0, openCases: 0, closedCases: 0});
+  const [shelter, setShelter] = useState({} as ShelterInfo);
   const [shelterName, setShelterName] = useState("");
   const [shelterAddress, setShelterAddress] = useState("");
   const [fieldsEdited, setFieldsEdited] = useState(false);
@@ -123,6 +125,16 @@ export default function ShelterDetailsPage() {
               <div className="mt-4">
                 <label className="block text-xl font-soft text-gray-700">
                   Zamknięte sprawy adopcyjne: {shelter.closedCases}
+                </label>
+              </div>
+              <div className="mt-4">
+                <label className="block text-xl font-soft text-gray-700">
+                  Otwarte zgłoszenia: {shelter.openMessages}
+                </label>
+              </div>
+              <div className="mt-4">
+                <label className="block text-xl font-soft text-gray-700">
+                  Zamknięte zgłoszenia: {shelter.closedMessages}
                 </label>
               </div>
             </div>

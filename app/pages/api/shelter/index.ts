@@ -9,6 +9,8 @@ type ShelterInfo = {
   employeeCount: number;
   openCases: number;
   closedCases: number;
+  openMessages: number;
+  closedMessages: number;
 };
 
 type ResponseData = {
@@ -47,13 +49,25 @@ export default async function handler(
       });
       let openCases = await prisma.adoption.count({
         where: {
-          isFinished: true,
+          isFinished: false,
           shelterId: session?.user?.shelterId
         }
       });
       let closedCases = await prisma.adoption.count({
         where: {
+          isFinished: true,
+          shelterId: session?.user?.shelterId
+        }
+      });
+      let openMessages = await prisma.message.count({
+        where: {
           isFinished: false,
+          shelterId: session?.user?.shelterId
+        }
+      });
+      let closedMessages = await prisma.message.count({
+        where: {
+          isFinished: true,
           shelterId: session?.user?.shelterId
         }
       });
@@ -63,6 +77,8 @@ export default async function handler(
         employeeCount: empCount,
         openCases: openCases,
         closedCases: closedCases,
+        openMessages: openMessages,
+        closedMessages: closedMessages,
       }
       return res.status(200).json({data: shelter});
     } else {
