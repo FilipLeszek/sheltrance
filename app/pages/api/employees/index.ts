@@ -31,7 +31,7 @@ export default async function handler(
   const prisma = new PrismaClient();
 
   try {
-    if (session?.user?.shelterId) {
+    if (session?.user?.shelterId && session.user?.role == "manager") {
       const employees = await prisma.appUser.findMany({
         where: {
           shelterId: session?.user?.shelterId

@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
 import {getServerSession} from "next-auth";
 import {authOptions} from "@/pages/api/auth/[...nextauth]";
+import { hashPassword } from "@/lib/passwd-utils";
 
 type ResponseData = {
   data?: string;
@@ -23,21 +24,24 @@ export default async function handler(
   const {firstName, lastName,  email, phoneNumber, password } = await parseDataFromReq(req);
   const session = await getServerSession(req, res, authOptions)
 
+  const hashedPassword = hashPassword(password);
 
   const prisma = new PrismaClient();
 
-  try {if (session?.user?.shelterId){
+  try {if (session?.user?.shelterId && session.user?.role == "manager"){
     const user = await prisma.appUser.create({
       data: {
         firstName: firstName,
         lastName: lastName,
         email: email,
         phoneNumber: phoneNumber,
-        password: password,
+        password: hashedPassword,
         role: "user",
         shelterId: session?.user?.shelterId,
       },
     });
+  } else {
+    return res.status(401).json({ error: "Unauthorized" });
   }
   } catch (error: any) {
     return res.status(400).json({ error: error.message });
