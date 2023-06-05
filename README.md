@@ -29,8 +29,8 @@ Mentor zespołu: mgr inż. Klara Borowa <br>
 
 
 ### Instrukcja uruchomienia
-Aplikacja jest skonteneryzowana <br>
-wystraczy wykonać polecenie: docker compose up w folderze sheltrance <br>
+Należy wykonać instrukcję npm i wewnątrz folderu app. <br>
+Następnie trzeba wykonać polecenie: docker compose up w folderze sheltrance <br>
 Docker compose up spowoduje zbudowanie aplikacji next.js i <br>
 wykona niezbędne polcenia do poprawnej pracy ORM. <br>
 Następnie poczeka aż baza danych będzie gotowa i wykona migrację schematu danych.

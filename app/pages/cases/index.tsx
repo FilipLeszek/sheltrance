@@ -54,7 +54,7 @@ const ShelterCasesPage:  NextPage<Props> = (props) => {
 
     }
     getData()
-  }, [setDialogOpen, dialogOpen, casesArray])
+  }, [setDialogOpen, dialogOpen])
 
   function CasesListItem(props: {adoptionCase: CaseInfo}) {
     const adoption = props.adoptionCase;
