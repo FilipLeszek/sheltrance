@@ -42,7 +42,7 @@ model Adoption {
   clientContact  String  @default("")
   stages         AdoptionStage[]
   assignedWorker AppUser?        @relation(fields: [userId], references: [id])
-  userId         Int
+  userId         Int?
   isFinished     Boolean         @default(false)
   shelter        Shelter?        @relation(fields: [shelterId], references: [id])
   shelterId      Int?
@@ -59,7 +59,7 @@ model AdoptionStage {
   adoptionId   Int
 }
 
-model Message{
+model Message {
   id                   Int @id @default(autoincrement())
   date                 DateTime @default(now())
   petId                Int
@@ -70,7 +70,7 @@ model Message{
   isFinished           Boolean @default(false)
   worker               AppUser? @relation(fields: [workerId], references: [id])
   workerId             Int?
-  shelter              Shelter @relation(fields: [shelterId], references: [id])
+  shelter              Shelter? @relation(fields: [shelterId], references: [id])
   shelterId            Int
   message              String
 }

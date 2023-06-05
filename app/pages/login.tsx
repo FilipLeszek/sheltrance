@@ -3,7 +3,7 @@ import { NextPage } from "next";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import LoginStructure from "@/components/login/LoginStructure";
 import Input from "@/components/login/Input";
 import ErrorAlert from "@/components/alerts/ErrorAlert";
@@ -38,7 +38,6 @@ const Login: NextPage<Props> = (props) => {
         title: "Błąd logowania",
         message: "Nie znaleziono użytkownika dla podanych danych.",
       });
-      console.error(result?.error);
     }
   };
 

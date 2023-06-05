@@ -65,9 +65,6 @@ export default function MessagesPage() {
     }
     SetFiltredMessages(filteredByContactAndType);
   };
-  const handleDropDown = () => {
-    setOpen(!isOpen);
-  };
 
   const handleMessageTypeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     getFilteredMessages(currentContact, e.target.value);
@@ -110,7 +107,7 @@ export default function MessagesPage() {
                 <option key="all" value="all">
                   Wszyscy
                 </option>
-                {[
+                {messages && messages.length > 0 && [
                   ...new Map(
                     messages.map((item) => [item["candidateContactInfo"], item])
                   ).values(),
@@ -141,9 +138,8 @@ export default function MessagesPage() {
                     <th className="px-4 py-2"></th>
                   </tr>
                 </thead>
-
                 <tbody className="divide-y divide-gray-200">
-                  {filtredMessages.map((message) => (
+                  {filtredMessages && filtredMessages.map((message) => (
                     <tr key={message.id}>
                       <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                         #{message.id}
