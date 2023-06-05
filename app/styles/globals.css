@@ -28,6 +28,11 @@
   box-sizing: border-box;
 }
 
+body {
+  overflow: hidden;
+  overflow-y: auto;
+}
+
 h2 {
   color: var(--dark);
   font-size: var(--font-size-lg);

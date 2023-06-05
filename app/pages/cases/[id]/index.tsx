@@ -213,7 +213,15 @@ const AdoptionDetailsPage:  NextPage<Props> = (props) => {
 
               </form>
             </div>
-            <footer className="flex align-end justify-end mt-2">
+            <footer className="flex align-end justify-end mt-2 gap-1">
+              {formStep > 1 &&
+                  <Button onClick={() => setFormStep(formStep-1)} type="submit" >Poprzedni</Button>
+              }
+              {
+                formStep < 4 &&
+                  <Button onClick={() => setFormStep(formStep+1)} type="submit" className="mr-2 color-[#1A212F]">Następny</Button>
+              }
+
               <Button onClick={() => saveChanges()} type="submit" >Zapisz zmiany</Button>
             </footer>
 

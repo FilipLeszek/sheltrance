@@ -100,7 +100,7 @@ export default function MessagePage() {
                 <h2 className="text-3xl font-bold sm:text-4xl">Załączona wiadomość</h2>
             
                 <p className="mt-4 text-gray-600">
-                    {messageDetails.message}
+                    {messageDetails?.message}
                 </p>
               </div>
             </div>
@@ -110,32 +110,32 @@ export default function MessagePage() {
 
               <div className="">
                 <label className="block text-xl font-soft text-gray-700">
-                  Status zgłoszenia: {messageDetails.isFinished ? "Zamknięte" : "Otwarte"}
+                  Status zgłoszenia: {messageDetails?.isFinished ? "Zamknięte" : "Otwarte"}
                 </label>
               </div>
               <div className="mt-4">
                 <label className="block text-xl font-soft text-gray-700">
-                  Dane klienta: {messageDetails.candidateFirstName} {messageDetails.candidateLastName}
+                  Dane klienta: {messageDetails?.candidateFirstName} {messageDetails?.candidateLastName}
                 </label>
               </div>
               <div className="mt-4">
                 <label className="block text-xl font-soft text-gray-700">
-                  Wybrane zwierzę: {messageDetails.petName}
+                  Wybrane zwierzę: {messageDetails?.petName}
                 </label>
               </div>
               <div className="mt-4">
                 <label className="block text-xl font-soft text-gray-700">
-                  Data zgłoszenia: {messageDetails.date?.toString().substring(0,10)}
+                  Data zgłoszenia: {messageDetails?.date?.toString().substring(0,10)}
                 </label>
               </div>
               <div className="mt-4">
                 <label className="block text-xl font-soft text-gray-700">
-                  Przypisany pracownik: {messageDetails.worker?.firstName} {messageDetails.worker?.lastName}
+                  Przypisany pracownik: {messageDetails?.worker?.firstName} {messageDetails?.worker?.lastName}
                 </label>
               </div>
               <div className="mt-4">
                 <label className="block text-xl font-soft text-gray-700">
-                  Dane kontaktowe: {messageDetails.candidateContactInfo}
+                  Dane kontaktowe: {messageDetails?.candidateContactInfo}
                 </label>
               </div>
             </div>
@@ -153,7 +153,7 @@ export default function MessagePage() {
                   </button>
                 </Link>
                 {
-                  (session?.user?.email && session.user.email == messageDetails.worker?.email && !messageDetails.isFinished) && (
+                  (session?.user?.email && session?.user?.email == messageDetails?.worker?.email && !messageDetails?.isFinished) && (
                   <button
                   className="inline-block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:relative"
                   onClick={handleClosingMessage}
@@ -163,7 +163,7 @@ export default function MessagePage() {
                   )
                 }
                 {
-                  (session?.user?.email && session.user.email == messageDetails.worker?.email && messageDetails.isFinished) && (
+                  (session?.user?.email && session.user.email == messageDetails?.worker?.email && messageDetails?.isFinished) && (
                   <button
                   className="inline-block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:relative"
                   onClick={handleOpeningMessage}
@@ -173,7 +173,7 @@ export default function MessagePage() {
                   )
                 }
                 {
-                  (session?.user?.email && messageDetails.worker == null) && (
+                  (session?.user?.email && messageDetails?.worker == null) && (
                   <button
                   className="inline-block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:relative"
                   onClick={handleTakingMessage}
@@ -183,7 +183,7 @@ export default function MessagePage() {
                   )
                 }
                 {
-                  (session?.user?.email && session.user.email == messageDetails.worker?.email && !messageDetails.isFinished) && (
+                  (session?.user?.email && session.user.email == messageDetails?.worker?.email && !messageDetails?.isFinished) && (
                   <button
                   className="inline-block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:relative"
                   onClick={close}

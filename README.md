@@ -36,7 +36,7 @@ wykona niezbędne polcenia do poprawnej pracy ORM. <br>
 Następnie poczeka aż baza danych będzie gotowa i wykona migrację schematu danych.
 
 Zostanie stworzony testowy użytkownik o danych: <br>
-login: user
+login: test100@gmail.com
 hasło: test
 
 ### Przebudowanie obrazu
@@ -45,14 +45,10 @@ docker compose up --build
 
 ## Dla developerów
 
-First, run the development server:
+Uruchomienie serwera:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.

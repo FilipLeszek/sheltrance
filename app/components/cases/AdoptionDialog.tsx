@@ -43,6 +43,9 @@ const AdoptionDialog: React.FC<AdoptionDialogProps> = (props )=> {
       const message = await response.text();
       props.setDialogOpen(false, message);
     };
+    props.setDialogOpen(false);
+    //await router.push("/cases");
+
   }
   return (
       <Transition.Root show={props.show} as={Fragment}>

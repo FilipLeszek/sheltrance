@@ -5,11 +5,15 @@
 
 .sidebar {
   width: 300px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh; /* Adjust the height as needed */
 }
 
 .content {
   width: calc(100vw - 380px);
   max-width: calc(100vw - 380px);
   overflow: hidden;
-  margin-left: 5rem; /* 80px */
+  margin-left: 380px;
 }

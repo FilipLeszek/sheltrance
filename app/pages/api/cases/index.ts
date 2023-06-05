@@ -49,7 +49,7 @@ export default async function handler(
       animalName,
     } = req.body;
     try {
-      await prisma.adoption.create({
+      const adoption = await prisma.adoption.create({
             data: {
               animalId: animalId,
               animalName: animalName,
@@ -81,12 +81,20 @@ export default async function handler(
                 ],
               },
               isFinished: false,
-              shelterId: session?.user?.shelterId,
-              userId: session?.user?.id || 1
+              shelter: {
+                connect: {
+                  id: session?.user?.shelterId
+                }
+              },
+              assignedWorker: {
+                connect: {
+                  email: session?.user?.email
+                }
+              }
             }
           }
       );
-      res.status(200).end();
+      return res.status(200).json({data: adoption});
     } catch (error: any) {
       return res.status(400).json({ error: error.message });
     } finally {
