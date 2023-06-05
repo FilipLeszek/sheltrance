@@ -94,7 +94,7 @@ export default async function handler(
             }
           }
       );
-      return res.status(200).json({data: adoption});
+      return res.status(200).end();
     } catch (error: any) {
       return res.status(400).json({ error: error.message });
     } finally {

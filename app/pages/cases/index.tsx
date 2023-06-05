@@ -104,7 +104,7 @@ const ShelterCasesPage:  NextPage<Props> = (props) => {
       });
     }
     else {
-      setError(null)
+      // setError(null)
     }
 
   }
