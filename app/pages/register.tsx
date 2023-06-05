@@ -64,7 +64,7 @@ const Register: NextPage<Props> = (props) => {
 
     await addUser(userData);
 
-    router.push("/login");
+    router.push({ pathname: "/login", query: { rs: 1 } });
   };
 
   return (

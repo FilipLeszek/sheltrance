@@ -1,6 +1,9 @@
 import Page from "@/components/page/Page";
 import styles from "./Messages.module.css";
 import { useEffect, useState } from "react";
+import SuccessAlert from "@/components/alerts/SuccessAlert";
+import { AlertMessage } from "@/types/alerts";
+import { useRouter } from "next/router";
 
 type WorkerInfo = {
   firstName: String;
@@ -20,6 +23,14 @@ export default function MessagesPage() {
   const [filtredMessages, SetFiltredMessages] = useState<Messages[]>([]);
   const [messageType, setMessageType] = useState<string>("all");
   const [currentContact, setCurrentContact] = useState<string>("all");
+
+  const router = useRouter();
+  const isLoginSuccess = Boolean(router.query.ls);
+
+  const successLoginAlert: AlertMessage = {
+    title: "Poprawnie zalogowano",
+    message: "Witamy w Twoim schronisku.",
+  };
 
   useEffect(() => {
     fetch("/api/messages", {
@@ -173,6 +184,7 @@ export default function MessagesPage() {
           </div>
         }
       />
+      {isLoginSuccess && <SuccessAlert message={successLoginAlert} />}
     </>
   );
 }
