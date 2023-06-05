@@ -8,11 +8,18 @@ import LoginStructure from "@/components/login/LoginStructure";
 import Input from "@/components/login/Input";
 import ErrorAlert from "@/components/alerts/ErrorAlert";
 import { AlertMessage } from "@/types/alerts";
+import SuccessAlert from "@/components/alerts/SuccessAlert";
 
 type Props = {};
 
 const Login: NextPage<Props> = (props) => {
   const router = useRouter();
+  const isRegisterSuccess = Boolean(router.query.rs);
+
+  const successRegisterAlert: AlertMessage = {
+    title: "Poprawnie zarejestrowano",
+    message: "Zaloguj się na swoje nowe konto.",
+  };
 
   const [error, setError] = useState<AlertMessage>();
 
@@ -32,7 +39,7 @@ const Login: NextPage<Props> = (props) => {
     });
 
     if (result?.ok) {
-      router.push("/");
+      router.push("/messages?ls=1");
     } else {
       setError({
         title: "Błąd logowania",
@@ -61,6 +68,7 @@ const Login: NextPage<Props> = (props) => {
         </div>
       </div>
       <ErrorAlert error={error} />
+      {isRegisterSuccess && <SuccessAlert message={successRegisterAlert} />}
     </LoginStructure>
   );
 };
