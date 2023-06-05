@@ -27,11 +27,12 @@ type Props = {};
 
 const ShelterEmployeesPage:  NextPage<Props> = (props) => {
 
-  const [employeeArray, setEmployeeArray] = useState([]);
+  const [employeeArray, setEmployeeArray] = useState([] as EmployeeInfo[]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [passwordDialogOpen, setPasswordDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [editedEmployee, setEditedEmployee] = useState({} as EmployeeInfo);
+  const [refresh, setRefresh] = useState(true);
 
   const firstNameRef = useRef<HTMLInputElement>(null);
   const lastNameRef = useRef<HTMLInputElement>(null);
@@ -43,6 +44,9 @@ const ShelterEmployeesPage:  NextPage<Props> = (props) => {
   const dialogPasswordRepRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    if(!refresh) {
+      return;
+    }
     async function getData() {
       const response = await fetch("/api/employees", {
         method: "GET",
@@ -54,7 +58,8 @@ const ShelterEmployeesPage:  NextPage<Props> = (props) => {
       setEmployeeArray(data.data)
     }
     getData()
-  }, [])
+    setRefresh(false);
+  }, [refresh])
   
   function handleReset(employee: EmployeeInfo) {
     setEditedEmployee(employee);
@@ -69,12 +74,18 @@ const ShelterEmployeesPage:  NextPage<Props> = (props) => {
     const password = dialogPasswordRef.current?.value;
     const passwordRep = dialogPasswordRepRef.current?.value;
     const employee = editedEmployee;
-    if(password && password === passwordRep){
+    if(!password) {
+      alert("Puste hasło");
+      return;
+    } else if(password === passwordRep){
       setPasswordDialogOpen(false)
       const res = await changeEmployeePassword({
         id: employee.id,
         password: password,
       });
+    } else {
+      alert("Niezgodne hasła");
+      return;
     }
   }
 
@@ -85,13 +96,16 @@ const ShelterEmployeesPage:  NextPage<Props> = (props) => {
     const phoneNumber = phoneNumberRef.current?.value;
     const password = passwordRef.current?.value;
 
-    await addNewEmployee({
+    let result = await addNewEmployee({
       firstName: firstName!,
       lastName: lastName!,
       email: email!,
       phoneNumber: phoneNumber!,
       password: password!
     });
+
+    setRefresh(true);
+    setDialogOpen(false);
   }
 
   function handleDeleteAttempt(employee: EmployeeInfo) {
@@ -266,7 +280,7 @@ const ShelterEmployeesPage:  NextPage<Props> = (props) => {
                     <DialogInput type={'password'} name={"Hasło"} ref={passwordRef}/>
                   </div>
                   <div className="px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                    <WorkerButton onClick={handleNewEmployee}>
+                    <WorkerButton type="button" onClick={handleNewEmployee}>
                       Dodaj
                       <svg 
                         xmlns="http://www.w3.org/2000/svg" 
@@ -281,7 +295,8 @@ const ShelterEmployeesPage:  NextPage<Props> = (props) => {
                           d="M12 4.5v15m7.5-7.5h-15" />
                       </svg>
                     </WorkerButton>
-                    <WorkerButton
+                    <WorkerButton 
+                      type="button"
                       color="bg-gray-200"
                       mr="mr-40"
                       onClick={() => setDialogOpen(false)}
@@ -309,7 +324,7 @@ const ShelterEmployeesPage:  NextPage<Props> = (props) => {
                     <DialogInput type={'password'} name={"Powtórz nowe hasło"} ref={dialogPasswordRepRef}/>
                   </div>
                   <div className="px-4 py-3 sm:flex sm:flex-row-reverse sm:px-2">
-                    <WorkerButton onClick={() => handlePasswordChange()} class="group">
+                    <WorkerButton type="button" onClick={() => handlePasswordChange()} class="group">
                       Resetuj
                       <svg
                         id="lockedIcon" 
@@ -337,7 +352,7 @@ const ShelterEmployeesPage:  NextPage<Props> = (props) => {
                           d="M13.5 10.5V6.75a4.5 4.5 0 119 0v3.75M3.75 21.75h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H3.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
                       </svg>
                     </WorkerButton>
-                    <WorkerButton
+                    <WorkerButton type="button"
                       color="bg-gray-200"
                       mr="mr-40"
                       onClick={() => setPasswordDialogOpen(false)}
@@ -356,7 +371,7 @@ const ShelterEmployeesPage:  NextPage<Props> = (props) => {
                   {editedEmployee.firstName} {editedEmployee.lastName}
                 </Dialog.Description>
                 <div className="px-4 py-3 sm:flex sm:flex-row-reverse sm:px-2">
-                  <WorkerButton class="group" onClick={() => handleDelete(editedEmployee)}>
+                  <WorkerButton type="button" class="group" onClick={() => handleDelete(editedEmployee)}>
                     Usuń
                     <svg 
                       xmlns="http://www.w3.org/2000/svg" 
@@ -372,7 +387,8 @@ const ShelterEmployeesPage:  NextPage<Props> = (props) => {
                         d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
                     </svg>
                   </WorkerButton>
-                  <WorkerButton
+                  <WorkerButton 
+                    type="button"
                     color="bg-gray-200"
                     mr="mr-40"
                     onClick={() => setDeleteDialogOpen(false)}
@@ -407,7 +423,7 @@ const ShelterEmployeesPage:  NextPage<Props> = (props) => {
               </table>
             </div>
             <div className="flex flex-row-reverse mr-4 mt-4">
-              <WorkerButton onClick={handleAdd}>
+              <WorkerButton type="button" onClick={handleAdd}>
               Dodaj pracownika
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
