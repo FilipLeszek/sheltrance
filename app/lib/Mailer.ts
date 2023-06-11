@@ -51,9 +51,23 @@ class Mailer {
   }
 }
 
-export class MailerLendy extends Mailer {
+export class MailerSheltrance extends Mailer {
   constructor() {
     super(SHELTRANCE_MAILER_CONF, SHELTRANCE_ADDR_CONF);
+  }
+
+  async sendPassResetHref(addr: string, link: string, linkLocalhost: string) {
+    const subject = "Resetowanie hasła";
+    const text = `Dzień dobry,<br/>
+    Zaczęto na Państwa koncie procedurę resetu hasła do konta o adresie ${addr}. <br/>
+    Aby ustawić nowe hasło do konta prosimy kliknąć w poniższy link: <br/> 
+    <a href="${link}">Zresetuj hasło</a>
+    <a href="${linkLocalhost}">Zresetuj hasło (localhost)</a>
+    <br/><br/>
+    Pozdrawiamy<br/>
+    Zespół Sheltrance`;
+
+    await this.sendHtml(addr, subject, text);
   }
 }
 
