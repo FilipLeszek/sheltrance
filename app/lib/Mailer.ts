@@ -11,11 +11,11 @@ type AddresseeConfig = { name: string; address: string };
 
 const SHELTRANCE_MAILER_CONF: SMTPTransport.Options = {
   service: "gmail",
-  auth: { user: "noreplysheltrance@gmail.com", pass: "KochamStudiowac123!" },
+  auth: { user: "noreplysheltrance@gmail.com", pass: "edwhwnaooriasuko" },
 };
 
 const SHELTRANCE_ADDR_CONF: AddresseeConfig = {
-  name: "Lendy - ubezpieczenie konia i jeźdźca",
+  name: "Sheltrance",
   address: "noreplysheltrance@gmail.com",
 };
 
@@ -58,10 +58,11 @@ export class MailerSheltrance extends Mailer {
 
   async sendPassResetHref(addr: string, link: string, linkLocalhost: string) {
     const subject = "Resetowanie hasła";
-    const text = `Dzień dobry,<br/>
+    const text = `Dzień dobry,
+    <br/><br/>
     Zaczęto na Państwa koncie procedurę resetu hasła do konta o adresie ${addr}. <br/>
     Aby ustawić nowe hasło do konta prosimy kliknąć w poniższy link: <br/> 
-    <a href="${link}">Zresetuj hasło</a>
+    <a href="${link}">Zresetuj hasło</a><br/>
     <a href="${linkLocalhost}">Zresetuj hasło (localhost)</a>
     <br/><br/>
     Pozdrawiamy<br/>
