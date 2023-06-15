@@ -51,10 +51,30 @@ const ShelterCasesPage:  NextPage<Props> = (props) => {
         }
       });
       setWorkers(tempWorkers);
-
     }
     getData()
   }, [])
+
+
+  useEffect(() => {
+      if (casesArray) {
+        const tempWorkers: WorkerDetails[] = [];
+
+        casesArray.forEach((item) => {
+          const assignedWorker = item.assignedWorker;
+          if (assignedWorker) {
+            const isUnique = tempWorkers.filter(worker => worker.id === assignedWorker.id)?.length === 0;
+            if (isUnique) {
+              tempWorkers.push(assignedWorker);
+            }
+          }
+        });
+        setWorkers(tempWorkers);
+      }
+
+      console.log(workers)
+  }, [casesArray])
+
 
   function CasesListItem(props: {adoptionCase: CaseInfo}) {
     const adoption = props.adoptionCase;
