@@ -40,6 +40,7 @@ export const authOptions: NextAuthOptions = {
             email: foundUser.email,
             role: foundUser.role,
             shelterId: foundUser.shelterId,
+            id: foundUser.id
           }; // Return the user object
         }
         return null;
@@ -52,6 +53,8 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.role = user.role;
         token.shelterId = user.shelterId;
+        token.email = user.email;
+        token.userId = user.id
       }
       return token;
     },

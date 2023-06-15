@@ -53,7 +53,7 @@ const ShelterCasesPage:  NextPage<Props> = (props) => {
       setWorkers(tempWorkers);
     }
     getData()
-  }, [])
+  }, [setDialogOpen, dialogOpen])
 
 
   useEffect(() => {
@@ -117,10 +117,16 @@ const ShelterCasesPage:  NextPage<Props> = (props) => {
 
   const onModalClose = (isOpen: boolean, message?: string) => {
     setDialogOpen(isOpen);
-    setError({
-      title: 'Wystąpił błąd podczas tworzenia sprawy',
-      message: message || ''
-    });
+    if (message){
+      setError({
+        title: 'Wystąpił błąd podczas tworzenia sprawy',
+        message: message || ''
+      });
+    }
+    else {
+      // setError(null)
+    }
+
   }
 
   // @ts-ignore
@@ -144,10 +150,10 @@ const ShelterCasesPage:  NextPage<Props> = (props) => {
           <div className="overflow-x-auto mt-2 mr-4 mb-2">
             <table className="w-9/12 divide-y-2 divide-gray-200 bg-white text-sm">
               <thead className="ltr:text-left rtl:text-right">
-              <tr key={123123123}>
+              <tr key={'123123123'}>
                 {[ "Numer sprawy", "Data utworzenia", "Adoptujący", "Pracownik"].map((h) => {
                       return(
-                          <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                          <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900" key={h}>
                             {h}
                           </th>
                       )

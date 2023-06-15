@@ -22,7 +22,7 @@ export default async function handler(
   const { email, password, name, address, firstName, lastName, phoneNumber } =
     await parseDataFromReq(req);
 
-  const hashedPassword = await hashPassword(password);
+  const hashedPassword = hashPassword(password);
 
   const prisma = new PrismaClient();
 

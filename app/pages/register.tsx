@@ -64,7 +64,7 @@ const Register: NextPage<Props> = (props) => {
 
     await addUser(userData);
 
-    router.push("/login");
+    router.push({ pathname: "/login", query: { rs: 1 } });
   };
 
   return (
@@ -126,8 +126,8 @@ function checkInputs(
 
   if (inputsLengthList.some((val) => val === 0)) {
     error.message = "Proszę wypełnić wszystkie pola tekstowe.";
-  } else if (userData.name.trim().length <= 4) {
-    error.message = "Login powinien zawierać przynajmniej 4 znaki.";
+  } else if (userData.name.trim().length < 4) {
+    error.message = "Nazwa powinna zawierać przynajmniej 4 znaki.";
   } else if (userData.password.length === 0 || passwd2.length === 0) {
     error.message = "Proszę wpisać hasło.";
   } else if (userData.password !== passwd2) {
