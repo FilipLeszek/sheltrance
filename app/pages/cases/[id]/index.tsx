@@ -120,10 +120,10 @@ const AdoptionDetailsPage:  NextPage<Props> = (props) => {
       <>
         {/*@ts-ignore*/}
         <Page children={
-          <div className="w-max">
+          <div className="mr-6">
             <p className="text-4xl font-medium ml-4 mb-10 mt-8">Sprawa adopcyjna numer {adoptionDetails?.id}</p>
             <div className="mt-1 mb-2 flex">
-              <div className="ml-6 bg-slate-200 rounded-lg pl-4 pr-8 py-4">
+              <div className="ml-4 bg-slate-200 rounded-lg pl-4 pr-8 py-4">
                 <p className="text-2xl font-medium mt-1 mb-1">Dane osoby adoptującej</p>
                 <div className="">
                   <label className="block text-xl font-soft text-gray-700">
@@ -170,7 +170,7 @@ const AdoptionDetailsPage:  NextPage<Props> = (props) => {
               </div>
 
             </div>
-            <div className="ml-6 bg-slate-200 rounded-lg pl-4 pr-8 py-4">
+            <div className="ml-4 bg-slate-200 rounded-lg pl-4 pr-8 py-4">
               <p className="text-2xl font-medium mt-2 mb-2">Etapy adopcji</p>
                 <div
                     className="relative after:absolute after:inset-x-0 after:top-1/2 after:block after:h-0.5 after:-translate-y-1/2 after:rounded-lg after:bg-gray-100"
@@ -205,7 +205,7 @@ const AdoptionDetailsPage:  NextPage<Props> = (props) => {
                 </div>
             </div>
 
-            <div className="ml-6 bg-slate-200 rounded-lg pl-4 pr-8 py-4 mt-2">
+            <div className="ml-4 bg-slate-200 rounded-lg pl-4 pr-8 py-4 mt-2">
 
               <form
                   className="flex flex-col w-full md:h-[25%] xl:h-[35%]">

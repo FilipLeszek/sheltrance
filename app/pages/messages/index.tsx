@@ -141,7 +141,7 @@ export default function MessagesPage() {
                       Data stworzenia
                     </th>
                     <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                      Osoba adoptująca
+                      Kontakt do osoby adoptującej
                     </th>
                     <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                       Przypisany pracownik
